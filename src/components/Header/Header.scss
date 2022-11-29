@@ -1,0 +1,61 @@
+@import '../../utils/scss/variables.scss';
+
+.header {
+  width: 100%;
+  background-color: $bg-color-first-section;
+  display: flex;
+  justify-content: center;
+  &_type_black {
+    background-color: $bg-color-main;
+  }
+  &__inner {
+    width: 1280px;
+    display: flex;
+    justify-content: space-between;
+    padding: 18px 70px;
+    box-sizing: border-box;
+  }
+  &__wrapper {
+    display: flex;
+    gap: 30px;
+    justify-content: space-between;
+    align-items: center;
+  }
+  &__logo {
+    width: 38px;
+    height: 38px;
+  }
+  &__link {
+    text-decoration: none;
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 16px;
+    &_type_signup {
+      color: $text-color-main;
+    }
+    &_type_signin {
+      color: $text-color-second;
+      padding: 8px 20px;
+      background-color: $accent-green;
+      border-radius: 3px;
+    }
+  }
+  &__text {
+    padding: 0;
+    margin: 0;
+  }
+  @media screen and (max-width: 1279px) {
+    &__inner {
+      width: 768px;
+      padding: 18px 30px;
+    }
+  }
+  @media screen and (max-width: 450px) {
+    &__inner {
+      width: 320px;
+      padding: 18px 14px;
+    }
+  }
+}
