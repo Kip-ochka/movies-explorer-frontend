@@ -1,0 +1,103 @@
+@import '../../utils//scss/variables.scss';
+
+.tech {
+  background-color: $bg-color-second;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  &__inner {
+    width: 1280px;
+    display: flex;
+    flex-direction: column;
+  }
+  &__title {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 50px;
+    line-height: 58px;
+    text-align: center;
+    letter-spacing: -0.04em;
+    color: $text-color-main;
+    padding: 90px 0 0 0;
+  }
+  &__text {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 20px;
+    text-align: center;
+    letter-spacing: -0.04em;
+    color: $text-color-main;
+    max-width: 460px;
+    text-align: center;
+    margin: 26px auto 0;
+  }
+  &__grid {
+    display: grid;
+    justify-content: center;
+    grid-template-columns: repeat(7, auto);
+    margin: 100px 0;
+    gap: 10px;
+  }
+  &__item {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 17px;
+    text-align: center;
+    letter-spacing: -0.04em;
+    color: $text-color-main;
+    background-color: #303030;
+    border-radius: 10px;
+    width: 90px;
+    padding: 21px 0;
+    margin: 0;
+  }
+  @media screen and (max-width: 1279px) {
+    &__inner {
+      width: 768px;
+    }
+    &__title {
+      padding: 80px 0 0 0;
+    }
+    &__text {
+      margin: 22px auto 0;
+      font-size: 12px;
+      line-height: 18px;
+    }
+    &__grid {
+      margin: 83px 90px;
+    }
+    &__item {
+      font-size: 12px;
+      line-height: 15px;
+    }
+  }
+  @media screen and (max-width: 767px) {
+    &__inner {
+      width: 320px;
+    }
+    &__title {
+      padding: 60px 0 0 0;
+      font-size: 30px;
+      line-height: 36px;
+    }
+    &__text {
+      margin: 24px auto 0;
+      font-size: 11px;
+      line-height: 16px;
+      width: 292px;
+    }
+    &__grid {
+      grid-template-columns: repeat(2, auto);
+      margin: 50px 0 70px;
+    }
+    &__item {
+      font-size: 12px;
+      line-height: 15px;
+    }
+  }
+}

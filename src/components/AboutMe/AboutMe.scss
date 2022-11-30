@@ -1,0 +1,32 @@
+@import '../../utils/scss/variables.scss';
+
+.about {
+  background-color: $bg-color-main;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  &__inner {
+    width: 1280px;
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+  }
+  &__bio-grid {
+    width: 89%;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    margin: 66px auto 0;
+  }
+  &__bio-flex {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  &__photo {
+    width: 270px;
+    height: 327px;
+    object-fit: fill;
+    justify-self: end;
+    border-radius: 10px;
+  }
+}

@@ -1,0 +1,114 @@
+@import '../../utils/scss/variables.scss';
+
+.about-project {
+  background-color: $bg-color-main;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  &__inner {
+    width: 1280px;
+  }
+  &__text-wrapper {
+    width: 89%;
+    margin: 70px auto 0;
+    display: grid;
+    grid-template-columns: repeat(2, auto);
+    column-gap: 40px;
+  }
+  &__text-item {
+    display: flex;
+    flex-direction: column;
+    gap: 26px;
+  }
+  &__title {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 24px;
+    letter-spacing: -0.04em;
+    color: #ffffff;
+    margin: 0;
+    padding: 0;
+  }
+  &__text {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 20px;
+    color: #ffffff;
+    margin: 0;
+    padding: 0;
+  }
+  &__timer-wrapper {
+    width: 89%;
+    margin: 110px auto;
+    display: grid;
+    grid-template-columns: 1fr 4fr;
+    row-gap: 14px;
+  }
+  &__timer {
+    text-align: center;
+    background-color: #303030;
+    padding: 9px 0;
+    margin: 0;
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 17px;
+    text-align: center;
+    color: $text-color-main;
+    &_first-week {
+      background-color: $accent-green;
+      color: #000000;
+    }
+  }
+  &__timer-discription {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 17px;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+    color: $text-color-third;
+  }
+  @media screen and (max-width: 1279px) {
+    &__inner {
+      width: 768px;
+    }
+    &__text-wrapper {
+      column-gap: 30px;
+      row-gap: 22px;
+    }
+    &__text {
+      font-size: 12px;
+      line-height: 18px;
+    }
+  }
+  @media screen and (max-width: 767px) {
+    &__inner {
+      width: 320px;
+    }
+    &__text-wrapper {
+      grid-template-columns: 1fr;
+      margin: 60px auto 0;
+      gap: 56px;
+    }
+    &__text-item {
+      gap: 16px;
+    }
+    &__timer-wrapper {
+      margin: 60px auto 93px;
+      grid-template-columns: 1fr 2fr;
+    }
+    &__timer {
+      padding: 11px 10px;
+      font-size: 11px;
+      line-height: 13px;
+    }
+  }
+}

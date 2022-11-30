@@ -34,12 +34,18 @@
     line-height: 16px;
     &_type_signup {
       color: $text-color-main;
+      &:hover {
+        opacity: 0.7;
+      }
     }
     &_type_signin {
       color: $text-color-second;
       padding: 8px 20px;
       background-color: $accent-green;
       border-radius: 3px;
+      &:hover {
+        opacity: 0.8;
+      }
     }
   }
   &__text {
@@ -56,6 +62,16 @@
     &__inner {
       width: 320px;
       padding: 18px 14px;
+    }
+    &__wrapper {
+      gap: 26px;
+    }
+    &__link {
+      font-size: 10px;
+      line-height: 16px;
+      &_type_signin {
+        padding: 5px 12px;
+      }
     }
   }
 }
