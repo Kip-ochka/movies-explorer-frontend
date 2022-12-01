@@ -2,6 +2,7 @@ import React from 'react'
 import SectionTitle from '../SectionTitle/SectionTitle'
 import './AboutMe.scss'
 import { ReactComponent as Arrow } from '../../images/text__COLOR_font-main.svg'
+import avatar from '../../images/avatar.jpg'
 const porfolioArr = [
   {
     linkName: 'Статичный сайт',
@@ -19,7 +20,7 @@ const porfolioArr = [
 
 function AboutMe() {
   return (
-    <section className='about'>
+    <section className='about' id='student'>
       <div className='about__inner'>
         <SectionTitle title='Студент' />
         <div className='about__bio-grid'>
@@ -45,23 +46,21 @@ function AboutMe() {
               GitHub
             </a>
           </div>
-          <img
-            src='https://podacha-blud.com/uploads/posts/2021-08/1627959524_35-p-foto-tortikov-36.jpg'
-            alt='Фото на паспорт'
-            className='about__photo'
-          />
+          <img src={avatar} alt='Фото на паспорт' className='about__photo' />
         </div>
 
         <div className='about__portfolio'>
           <p className='about__portfolio-text'>Портфолио</p>
-          {porfolioArr.map((item, id) => {
-            return (
-              <a href={item.link} className='portfolio__project' key={id}>
-                <p>{item.linkName}</p>
-                <Arrow />
-              </a>
-            )
-          })}
+          <div className='about__project-wrapper'>
+            {porfolioArr.map((item, id) => {
+              return (
+                <a href={item.link} className='about__project' key={id}>
+                  <p className='about__project-text'>{item.linkName}</p>
+                  <Arrow />
+                </a>
+              )
+            })}
+          </div>
         </div>
       </div>
     </section>
