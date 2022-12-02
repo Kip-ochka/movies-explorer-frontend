@@ -1,0 +1,110 @@
+@import '../../utils/scss/variables.scss';
+.navigation {
+  display: flex;
+  &__inner {
+    display: flex;
+    gap: 50px;
+    align-items: center;
+  }
+  &__link-list {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+  &__film-link {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 18px;
+    text-align: right;
+    color: $text-color-main;
+    text-decoration: none;
+    &:last-child {
+      margin: 0;
+    }
+    &_active {
+      font-weight: 500;
+    }
+    &_mobile {
+      display: none;
+      opacity: 0;
+      visibility: hidden;
+    }
+  }
+  &__accoutn-link {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 13px;
+    line-height: 12px;
+    color: $text-color-main;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+  }
+  &__account-icon {
+    height: 11px;
+    width: 11px;
+    padding: 8px;
+    background-color: #313131;
+    border-radius: 50%;
+  }
+}
+@media screen and (max-width: 1279px) {
+  .navigation {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    right: 0;
+    background-color: rgba(0, 0, 0, 0.3);
+    justify-content: flex-end;
+    z-index: 10;
+    transition: opacity 0.2s ease, visibility 0.4s;
+    opacity: 0;
+    visibility: hidden;
+    &_active {
+      opacity: 1;
+      visibility: visible;
+    }
+    &__inner {
+      background-color: $bg-color-main;
+      width: 520px;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    &__link-list {
+      flex-direction: column;
+      gap: 28px;
+      margin: 160px auto 0;
+    }
+    &__account-link-wrapper {
+      margin: 0 auto 90px;
+    }
+    &__film-link {
+      font-size: 18px;
+      line-height: 22px;
+      &_mobile {
+        display: inline;
+        opacity: 1;
+        visibility: visible;
+      }
+      &_active {
+        padding: 0 0 4px 0;
+        border-bottom: 2px solid $text-color-main;
+      }
+    }
+  }
+  @media screen and (max-width: 767px) {
+    .navigation {
+      &__inner {
+        width: 100%;
+      }
+    }
+  }
+}

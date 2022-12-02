@@ -62,40 +62,25 @@
     cursor: pointer;
     padding: 0;
   }
-  &__account-wrapper {
-    display: flex;
-    gap: 50px;
-  }
-  &__inner-wrapper {
-  }
-  &__film-link {
-    font-family: 'Inter';
-    font-style: normal;
-    font-weight: 400;
-    font-size: 14px;
-    line-height: 18px;
-    text-align: right;
-    color: $text-color-main;
-    text-decoration: none;
-    margin: 0 20px 0 0;
-    &:last-child {
-      margin: 0;
-    }
-    &__film-link_active {
-      font-weight: 500px;
-    }
-  }
 
   @media screen and (max-width: 1279px) {
     &__inner {
       width: 768px;
       padding: 18px 30px;
     }
-    &__account-wrapper {
-      display: none;
-    }
+
     &__button {
       display: flex;
+      &_opened {
+        background-image: url(../../images/burger-close.svg);
+        background-position: center;
+        width: 22px;
+        height: 22px;
+        position: fixed;
+        z-index: 15;
+        top: 23px;
+        right: 23px;
+      }
     }
   }
   @media screen and (max-width: 450px) {
