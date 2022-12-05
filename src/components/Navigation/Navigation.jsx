@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { NavLink, Link } from 'react-router-dom'
 import account from '../../images/accuont.svg'
 import './Navigation.scss'
 
@@ -9,6 +9,11 @@ function Navigation({ isOpen, onClose }) {
       onClose()
     }
   }
+  const setActiveLink = (navState) => {
+    return navState.isActive
+      ? 'navigation__film-link navigation__film-link_active'
+      : 'navigation__film-link'
+  }
   return (
     <nav
       className={`navigation ${isOpen && 'navigation_active'}`}
@@ -16,22 +21,28 @@ function Navigation({ isOpen, onClose }) {
     >
       <div className='navigation__inner'>
         <ul className='navigation__link-list'>
-          <li onClick={onClose}>
-            <Link className='navigation__film-link navigation__film-link_mobile'>
+          <li onClick={onClose} className='navigation__film-link_mobile'>
+            <NavLink className={setActiveLink} to='/'>
               Главная
-            </Link>
+            </NavLink>
           </li>
           <li onClick={onClose}>
-            <Link className='navigation__film-link navigation__film-link_active'>
+            <NavLink className={setActiveLink} to='/movies'>
               Фильмы
-            </Link>
+            </NavLink>
           </li>
           <li onClick={onClose}>
-            <Link className='navigation__film-link'>Сохраненные фильмы</Link>
+            <NavLink className={setActiveLink} to='/saved-movies'>
+              Сохраненные фильмы
+            </NavLink>
           </li>
         </ul>
         <div className='navigation__account-link-wrapper'>
-          <Link className='navigation__accoutn-link' onClick={onClose}>
+          <Link
+            className='navigation__accoutn-link'
+            onClick={onClose}
+            to='/profile'
+          >
             Аккаунт
             <img
               className='navigation__account-icon'

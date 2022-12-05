@@ -37,10 +37,16 @@ function Header({ isLogin }) {
           </>
         ) : (
           <div className='header__wrapper'>
-            <Link className='header__link header__link_type_signup'>
+            <Link
+              className='header__link header__link_type_signup'
+              to='/signup'
+            >
               <p className='header__text'>Регистрация</p>
             </Link>
-            <Link className='header__link header__link_type_signin'>
+            <Link
+              className='header__link header__link_type_signin'
+              to='/signin'
+            >
               <p className='header__text'>Войти</p>
             </Link>
           </div>
