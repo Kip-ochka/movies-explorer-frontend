@@ -7,12 +7,13 @@ import Login from '../Login/Login'
 import Main from '../Main/Main'
 import NotFoundPage from '../NotFoundPage/NotFoundPage'
 import Preloader from '../Preloader/Preloader'
+import Profile from '../Profile/Profile'
 import Register from '../Register/Register'
 import './App.scss'
 
 function App() {
   const lokation = useLocation().pathname
-  const [isLogin, setIsLogin] = useState(false)
+  const [isLogin, setIsLogin] = useState(true)
   const [isLoading, setIsLoading] = useState(false)
 
   const isPageWithHeader = pageWithHeader.includes(lokation)
@@ -29,6 +30,7 @@ function App() {
             <Route path='/signup' element={<Register />} />
             <Route path='/signin' element={<Login />} />
             <Route path='*' element={<NotFoundPage />} />
+            <Route path='/profile' element={<Profile />} />
           </Routes>
           {isPageWithFooter ? <Footer /> : null}
         </>

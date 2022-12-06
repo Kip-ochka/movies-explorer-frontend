@@ -10,6 +10,8 @@ function FormInput({ inputData }) {
           errorStatus && 'form-input__input_error'
         }`}
         type={type}
+        required
+        minLenth='3'
       />
       <span
         className={`form-input__error ${
