@@ -1,7 +1,35 @@
 import React from 'react'
 import './SearchForm.scss'
+import { ReactComponent as Loop } from '../../images/loopa.svg'
+
 function SearchForm() {
-  return <form className='search'></form>
+  const [isChecked, setIsChecked] = React.useState(false)
+  const handleCheck = () => {
+    setIsChecked((v) => !v)
+  }
+  return (
+    <form className="search">
+      <div className="search__inner">
+        <fieldset className="search__fieldset">
+          <div className="search__input-wrapper">
+            <Loop className="search__loop-icon" />
+            <input type="text" className="search__input" placeholder="Фильм" />
+            <button className="search__submit" type="submit" />
+            <div className="search__dash"></div>
+          </div>
+        </fieldset>
+        <div className="search__checkbox-wrapper">
+          <input
+            type="checkbox"
+            className="search__checkbox"
+            checked={isChecked}
+            onChange={handleCheck}
+          />
+          <span className="search__checkbox-discription">Короткометражки</span>
+        </div>
+      </div>
+    </form>
+  )
 }
 
 export default SearchForm
