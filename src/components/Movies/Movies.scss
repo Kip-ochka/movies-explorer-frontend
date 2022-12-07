@@ -1,0 +1,10 @@
+@import '../../utils/scss/variables.scss';
+//175 footer \ mobile 255px
+// 74 header
+.movies {
+  min-height: calc(100vh - 246px);
+  background-color: $bg-color-main;
+  @media screen and (max-width: 767px) {
+    min-height: calc(100vh - 255px - 74px);
+  }
+}

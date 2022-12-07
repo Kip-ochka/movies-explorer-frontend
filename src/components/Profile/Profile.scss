@@ -1,7 +1,7 @@
 @import '../../utils/scss/variables.scss';
 
 .profile {
-  min-height: calc(100vh - 77px);
+  min-height: calc(100vh - 78px);
   background-color: $bg-color-main;
   display: flex;
   flex-direction: column;
@@ -15,7 +15,7 @@
     width: 410px;
     display: flex;
     flex-direction: column;
-    margin: 74px 0px;
+    margin: 58px 0px 54px;
   }
   &__title {
     font-family: 'Inter';
@@ -156,24 +156,21 @@
     }
   }
   @media screen and (max-width: 1279px) {
-    .profile {
-      &__inner {
-        margin: 236px 0px;
-      }
-      &__fieldset {
-        margin: 96px 0px 190px;
-      }
+    min-height: calc(100vh - 74px);
+    &__inner {
+      margin: 226px 0px 269px;
+    }
+    &__fieldset {
+      margin: 80px 0px 164px;
     }
   }
   @media screen and (max-width: 767px) {
-    .profile {
-      &__inner {
-        width: 260px;
-        margin: 70px 0px;
-      }
-      &__fieldset {
-        margin: 80px 0px 337px;
-      }
+    &__inner {
+      width: 260px;
+      margin: 70px 0px 40px;
+    }
+    &__fieldset {
+      margin: 64px 0px 321px;
     }
   }
 }

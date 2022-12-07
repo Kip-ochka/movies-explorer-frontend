@@ -22,7 +22,7 @@ function Header({ isLogin }) {
   return (
     <header className={isMainLokation ? 'header' : 'header header_type_black'}>
       <div className='header__inner'>
-        <Link to='/'>
+        <Link to='/' className='header__link'>
           <Logo className='header__logo' />
         </Link>
         {isLogin ? (

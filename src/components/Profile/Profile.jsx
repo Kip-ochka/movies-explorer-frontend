@@ -36,9 +36,7 @@ function Profile() {
             </label>
           </fieldset>
           <div className='profile__redacted-wrapper'>
-            <span className='profile__error profile__error_active'>
-              {'error'}
-            </span>
+            <span className='profile__error'>{'error'}</span>
             {isRedacted ? (
               <button
                 onClick={handleRedacted}

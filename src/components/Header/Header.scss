@@ -5,6 +5,7 @@
   background-color: $bg-color-first-section;
   display: flex;
   justify-content: center;
+  max-height: 74px;
   &_type_black {
     background-color: $bg-color-main;
   }
@@ -66,7 +67,7 @@
   @media screen and (max-width: 1279px) {
     &__inner {
       width: 768px;
-      padding: 18px 30px;
+      padding: 15px 30px;
     }
 
     &__button {
@@ -86,7 +87,7 @@
   @media screen and (max-width: 450px) {
     &__inner {
       width: 320px;
-      padding: 18px 14px;
+      padding: 15px 14px;
     }
     &__wrapper {
       gap: 26px;
