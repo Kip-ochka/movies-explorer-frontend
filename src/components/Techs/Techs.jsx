@@ -17,9 +17,9 @@ function Techs() {
         <div className='tech__grid'>
           {techArr.map((tech, id) => {
             return (
-              <p className='tech__item' key={id}>
+              <h2 className='tech__item' key={id}>
                 {tech}
-              </p>
+              </h2>
             )
           })}
         </div>

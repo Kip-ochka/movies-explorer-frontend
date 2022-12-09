@@ -16,7 +16,7 @@ import './App.scss'
 function App() {
   const location = useLocation().pathname
 
-  const [isLogin, setIsLogin] = useState(false)
+  const [isLogin, setIsLogin] = useState(true)
   const [isLoading, setIsLoading] = useState(false)
 
   const isPageWithHeader = pageWithHeader.includes(location)

@@ -1,7 +1,8 @@
 @import '../../utils/scss/variables.scss';
 
 .section-title {
-  padding: 110px 0 23px 70px;
+  width: 1140px;
+  padding: 110px 0 23px 0px;
   margin: 0;
   font-family: 'Inter';
   font-style: normal;
@@ -17,13 +18,15 @@
     background-color: #dadada;
   }
   @media screen and (max-width: 1279px) {
-    padding: 90px 0 23px 50px;
+    width: 668px;
+    padding: 90px 0 23px 0px;
     &__underline {
       margin: 0 50px;
     }
   }
   @media screen and (max-width: 767px) {
-    padding: 70px 0 28px 18px;
+    width: 284px;
+    padding: 70px 0 28px 0px;
     &__underline {
       margin: 0 18px;
     }
