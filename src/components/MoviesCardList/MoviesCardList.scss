@@ -12,7 +12,7 @@
     grid-template-columns: repeat(4, 1fr);
     column-gap: 20px;
     row-gap: 38px;
-    margin: 10px 0;
+    margin: 80px 0 10px;
     list-style: none;
   }
   &__button-wrapper {
@@ -51,7 +51,7 @@
       grid-template-columns: repeat(1, 1fr);
       column-gap: 0px;
       row-gap: 34px;
-      margin: 50px 0 0px;
+      margin: 50px 0 10px;
     }
     &__more-button {
       padding: 9px 106px;

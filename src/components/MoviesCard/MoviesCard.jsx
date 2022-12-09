@@ -1,7 +1,12 @@
 import React from 'react'
 import './MoviesCard.scss'
 
-function MoviesCard() {
+function MoviesCard({ location }) {
+  const [isLiked, setIsLiked] = React.useState(false)
+  const handleLike = () => {
+    setIsLiked((v) => !v)
+  }
+
   return (
     <li className='card'>
       <a href='www.youtube.com' target='_blank' className='card__trailer'>
@@ -12,11 +17,15 @@ function MoviesCard() {
         />
       </a>
       <div className='card__title-wrapper'>
-        <p className='card__title'>
-          Я рыба я не рыба Я рыба я не рыба Я рыба я не рыба Я рыба я не рыба Я
-          рыба я не рыба Я рыба я не рыба
-        </p>
-        <button className='card__like' />
+        <p className='card__title'>Я рыба я не рыба а рыба фыв фыв </p>
+        {location === '/movies' ? (
+          <button
+            className={`card__like ${isLiked && 'card__like_type_active'}`}
+            onClick={handleLike}
+          />
+        ) : (
+          <button className={`card__delete`} />
+        )}
       </div>
       <p className='card__duration'>1ч 24м</p>
     </li>

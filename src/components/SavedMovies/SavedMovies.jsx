@@ -1,15 +1,13 @@
 import React from 'react'
+import './SavedMovies.scss'
+import MoviesCardList from '../MoviesCardList/MoviesCardList'
 import SearchForm from '../SearchForm/SearchForm'
 import Preloader from '../Preloader/Preloader'
-import './Movies.scss'
-import MoviesCardList from '../MoviesCardList/MoviesCardList'
-import { useLocation } from 'react-router-dom'
 
-function Movies({ location }) {
+function SavedMovies({ location }) {
   const [isLoading, setIsLoading] = React.useState(false)
-
   return (
-    <main className='movies'>
+    <section className='saved-movies'>
       <SearchForm />
       {isLoading ? (
         <Preloader />
@@ -18,8 +16,8 @@ function Movies({ location }) {
           <MoviesCardList location={location} />
         </>
       )}
-    </main>
+    </section>
   )
 }
 
-export default Movies
+export default SavedMovies

@@ -10,15 +10,17 @@ import NotFoundPage from '../NotFoundPage/NotFoundPage'
 import Preloader from '../Preloader/Preloader'
 import Profile from '../Profile/Profile'
 import Register from '../Register/Register'
+import SavedMovies from '../SavedMovies/SavedMovies'
 import './App.scss'
 
 function App() {
-  const lokation = useLocation().pathname
-  const [isLogin, setIsLogin] = useState(true)
+  const location = useLocation().pathname
+
+  const [isLogin, setIsLogin] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
 
-  const isPageWithHeader = pageWithHeader.includes(lokation)
-  const isPageWithFooter = pageWithFooter.includes(lokation)
+  const isPageWithHeader = pageWithHeader.includes(location)
+  const isPageWithFooter = pageWithFooter.includes(location)
   return (
     <div className='page'>
       {isLoading ? (
@@ -31,7 +33,11 @@ function App() {
             <Route path='/signup' element={<Register />} />
             <Route path='/signin' element={<Login />} />
             <Route path='/profile' element={<Profile />} />
-            <Route path='/movies' element={<Movies />} />
+            <Route path='/movies' element={<Movies location={location} />} />
+            <Route
+              path='/saved-movies'
+              element={<SavedMovies location={location} />}
+            />
             <Route path='*' element={<NotFoundPage />} />
           </Routes>
           {isPageWithFooter ? <Footer /> : null}

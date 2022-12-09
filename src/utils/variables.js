@@ -1,4 +1,4 @@
-const pageWithHeader = ['/', '/movies', '/saved-films', '/profile']
-const pageWithFooter = ['/', '/movies', '/saved-films']
+const pageWithHeader = ['/', '/movies', '/saved-movies', '/profile']
+const pageWithFooter = ['/', '/movies', '/saved-movies']
 
 export { pageWithFooter, pageWithHeader }

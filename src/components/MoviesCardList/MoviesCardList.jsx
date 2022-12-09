@@ -2,12 +2,12 @@ import React from 'react'
 import MoviesCard from '../MoviesCard/MoviesCard'
 import './MoviesCardList.scss'
 
-function MoviesCardList() {
+function MoviesCardList({ location }) {
   let comp = 16
   let tab = 8
   let mob = 4
   const myArray = Array.from(Array(100), (_, index) => (
-    <MoviesCard key={index} />
+    <MoviesCard key={index} location={location} />
   ))
 
   const [slicedArr, setSlicedArr] = React.useState([])
@@ -26,16 +26,11 @@ function MoviesCardList() {
     setSlicedArr(sliceByWidth(myArray, comp))
   }, [])
 
-  const onEshe = () => {}
-
-  console.log(window.innerWidth)
   return (
     <section className='card-list'>
       <ul className='card-list__inner'>{slicedArr.map((item) => item)}</ul>
       <div className='card-list__button-wrapper'>
-        <button className='card-list__more-button' onClick={onEshe}>
-          Ещё
-        </button>
+        <button className='card-list__more-button'>Ещё</button>
       </div>
     </section>
   )
