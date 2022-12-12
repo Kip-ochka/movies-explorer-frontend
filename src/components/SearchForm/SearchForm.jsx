@@ -30,6 +30,7 @@ function SearchForm() {
             checked={isChecked}
             onChange={handleCheck}
             disabled={isDisabled}
+            required
           />
           <span className='search__checkbox-discription'>Короткометражки</span>
         </div>

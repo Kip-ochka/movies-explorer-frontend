@@ -14,15 +14,15 @@ function Techs() {
           На курсе веб-разработки мы освоили технологии, которые применили в
           дипломном проекте.
         </p>
-        <div className='tech__grid'>
+        <ul className='tech__grid'>
           {techArr.map((tech, id) => {
             return (
-              <h2 className='tech__item' key={id}>
-                {tech}
-              </h2>
+              <li key={id}>
+                <h2 className='tech__item'>{tech}</h2>
+              </li>
             )
           })}
-        </div>
+        </ul>
       </div>
     </section>
   )

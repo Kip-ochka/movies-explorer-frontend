@@ -32,11 +32,6 @@
     &:hover {
       opacity: 0.7;
     }
-    &_mobile {
-      display: none;
-      opacity: 0;
-      visibility: hidden;
-    }
   }
   &__accoutn-link {
     font-family: 'Inter', Arial, Helvetica, sans-serif;
@@ -59,6 +54,13 @@
     padding: 8px;
     background-color: #313131;
     border-radius: 50%;
+  }
+  &__link-item {
+    &_mobile {
+      display: none;
+      opacity: 0;
+      visibility: hidden;
+    }
   }
 }
 @media screen and (max-width: 768px) {
@@ -97,14 +99,17 @@
     &__film-link {
       font-size: 18px;
       line-height: 22px;
+
+      &_active {
+        padding: 0 0 4px 0;
+        border-bottom: 2px solid $text-color-main;
+      }
+    }
+    &__link-item {
       &_mobile {
         display: inline;
         opacity: 1;
         visibility: visible;
-      }
-      &_active {
-        padding: 0 0 4px 0;
-        border-bottom: 2px solid $text-color-main;
       }
     }
   }

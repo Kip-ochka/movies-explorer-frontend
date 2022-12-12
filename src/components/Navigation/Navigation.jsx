@@ -23,18 +23,18 @@ function Navigation({ isOpen, onClose }) {
         <ul className='navigation__link-list'>
           <li
             onClick={onClose}
-            className='navigation__film-link navigation__film-link_mobile'
+            className='navigation__link-item navigation__link-item_mobile'
           >
             <NavLink className={setActiveLink} to='/'>
               Главная
             </NavLink>
           </li>
-          <li onClick={onClose}>
+          <li onClick={onClose} className='navigation__link-item'>
             <NavLink className={setActiveLink} to='/movies'>
               Фильмы
             </NavLink>
           </li>
-          <li onClick={onClose}>
+          <li onClick={onClose} className='navigation__link-item'>
             <NavLink className={setActiveLink} to='/saved-movies'>
               Сохраненные фильмы
             </NavLink>

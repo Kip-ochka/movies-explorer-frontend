@@ -51,22 +51,23 @@ function AboutMe() {
 
         <div className='about__portfolio'>
           <p className='about__portfolio-text'>Портфолио</p>
-          <div className='about__project-wrapper'>
+          <ul className='about__project-wrapper'>
             {porfolioArr.map((item, id) => {
               return (
-                <a
-                  href={item.link}
-                  className='about__project'
-                  key={id}
-                  target='_blank'
-                  rel='noreferrer'
-                >
-                  <p className='about__project-text'>{item.linkName}</p>
-                  <Arrow />
-                </a>
+                <li key={id}>
+                  <a
+                    href={item.link}
+                    className='about__project'
+                    target='_blank'
+                    rel='noreferrer'
+                  >
+                    <p className='about__project-text'>{item.linkName}</p>
+                    <Arrow />
+                  </a>
+                </li>
               )
             })}
-          </div>
+          </ul>
         </div>
       </div>
     </section>

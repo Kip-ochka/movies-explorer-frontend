@@ -17,6 +17,8 @@
     display: grid;
     grid-template-columns: repeat(2, auto);
     column-gap: 40px;
+    padding: 0;
+    list-style: none;
   }
   &__text-item {
     display: flex;
@@ -49,7 +51,13 @@
     margin: 110px auto;
     display: grid;
     grid-template-columns: 1fr 4fr;
-    row-gap: 14px;
+    padding: 0;
+    list-style: none;
+  }
+  &__timer-item {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
   }
   &__timer {
     text-align: center;
@@ -106,6 +114,9 @@
       padding: 11px 10px;
       font-size: 11px;
       line-height: 13px;
+    }
+    &__timer-item {
+      gap: 10px;
     }
   }
 }
