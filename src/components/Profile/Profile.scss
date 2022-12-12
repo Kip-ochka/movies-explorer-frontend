@@ -18,7 +18,7 @@
     margin: 58px 0px 54px;
   }
   &__title {
-    font-family: 'Inter';
+    font-family: 'Inter', Arial, Helvetica, sans-serif;
     font-style: normal;
     font-weight: 500;
     font-size: 24px;
@@ -45,7 +45,7 @@
   }
 
   &__label {
-    font-family: 'Inter';
+    font-family: 'Inter', Arial, Helvetica, sans-serif;
     font-style: normal;
     font-weight: 500;
     font-size: 11px;
@@ -61,7 +61,7 @@
     position: relative;
     background-color: transparent;
     border: 0;
-    font-family: 'Inter';
+    font-family: 'Inter', Arial, Helvetica, sans-serif;
     font-style: normal;
     font-weight: 400;
     font-size: 11px;
@@ -84,7 +84,7 @@
     align-items: center;
   }
   &__error {
-    font-family: 'Inter';
+    font-family: 'Inter', Arial, Helvetica, sans-serif;
     font-style: normal;
     font-weight: 400;
     font-size: 11px;
@@ -101,7 +101,7 @@
   }
   &__redacted {
     background-color: transparent;
-    font-family: 'Inter';
+    font-family: 'Inter', Arial, Helvetica, sans-serif;
     font-style: normal;
     font-weight: 400;
     font-size: 13px;
@@ -118,7 +118,7 @@
   &__exit {
     background-color: transparent;
     border: none;
-    font-family: 'Inter';
+    font-family: 'Inter', Arial, Helvetica, sans-serif;
     font-style: normal;
     font-weight: 500;
     font-size: 13px;
@@ -135,7 +135,7 @@
     border-radius: 3px;
     padding: 14px 0;
     border: none;
-    font-family: 'Inter';
+    font-family: 'Inter', Arial, Helvetica, sans-serif;
     font-style: normal;
     font-weight: 500;
     font-size: 14px;
