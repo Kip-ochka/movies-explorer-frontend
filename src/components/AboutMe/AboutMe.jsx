@@ -54,7 +54,13 @@ function AboutMe() {
           <div className='about__project-wrapper'>
             {porfolioArr.map((item, id) => {
               return (
-                <a href={item.link} className='about__project' key={id}>
+                <a
+                  href={item.link}
+                  className='about__project'
+                  key={id}
+                  target='_blank'
+                  rel='noreferrer'
+                >
                   <p className='about__project-text'>{item.linkName}</p>
                   <Arrow />
                 </a>

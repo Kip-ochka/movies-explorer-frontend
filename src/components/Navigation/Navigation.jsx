@@ -16,12 +16,15 @@ function Navigation({ isOpen, onClose }) {
   }
   return (
     <nav
-      className={`navigation ${isOpen && 'navigation_active'}`}
+      className={`navigation ${isOpen ? 'navigation_active' : ''}`}
       onClick={handleCloseOverlay}
     >
       <div className='navigation__inner'>
         <ul className='navigation__link-list'>
-          <li onClick={onClose} className='navigation__film-link_mobile'>
+          <li
+            onClick={onClose}
+            className='navigation__film-link navigation__film-link_mobile'
+          >
             <NavLink className={setActiveLink} to='/'>
               Главная
             </NavLink>

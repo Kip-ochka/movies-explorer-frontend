@@ -9,7 +9,12 @@ function MoviesCard({ location }) {
 
   return (
     <li className='card'>
-      <a href='www.youtube.com' target='_blank' className='card__trailer'>
+      <a
+        href='https://www.youtube.com/watch?v=iYMoLgSlSKQ&t=2s'
+        target='_blank'
+        className='card__trailer'
+        rel='noreferrer'
+      >
         <img
           src='https://www.soyuz.ru/public/uploads/files/5/7481412/1005x558_20220415183252fecbaf0ea2.jpg'
           alt='Трейлер фильма'
