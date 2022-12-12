@@ -10,7 +10,7 @@
     background-color: $bg-color-main;
   }
   &__inner {
-    width: 1280px;
+    width: 100%;
     display: flex;
     justify-content: space-between;
     padding: 18px 70px;
@@ -64,9 +64,9 @@
     padding: 0;
   }
 
-  @media screen and (max-width: 1279px) {
+  @media screen and (max-width: 768px) {
     &__inner {
-      width: 768px;
+      width: 100%;
       padding: 15px 30px;
     }
 
@@ -86,7 +86,7 @@
   }
   @media screen and (max-width: 450px) {
     &__inner {
-      width: 320px;
+      width: 100%;
       padding: 15px 14px;
     }
     &__wrapper {

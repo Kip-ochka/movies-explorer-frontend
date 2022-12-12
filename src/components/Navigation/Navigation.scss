@@ -61,7 +61,7 @@
     border-radius: 50%;
   }
 }
-@media screen and (max-width: 1279px) {
+@media screen and (max-width: 768px) {
   .navigation {
     width: 100%;
     height: 100%;
@@ -74,9 +74,11 @@
     transition: opacity 0.2s ease, visibility 0.4s;
     opacity: 0;
     visibility: hidden;
+    display: none;
     &_active {
       opacity: 1;
       visibility: visible;
+      display: flex;
     }
     &__inner {
       background-color: $bg-color-main;

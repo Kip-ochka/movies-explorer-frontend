@@ -6,7 +6,7 @@
   flex-direction: column;
   align-items: center;
   &__inner {
-    width: 1280px;
+    width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -80,9 +80,6 @@
     color: $text-color-third;
   }
   @media screen and (max-width: 1279px) {
-    &__inner {
-      width: 768px;
-    }
     &__text-wrapper {
       column-gap: 30px;
       row-gap: 22px;
@@ -93,9 +90,6 @@
     }
   }
   @media screen and (max-width: 767px) {
-    &__inner {
-      width: 320px;
-    }
     &__text-wrapper {
       grid-template-columns: 1fr;
       margin: 60px auto 0;
