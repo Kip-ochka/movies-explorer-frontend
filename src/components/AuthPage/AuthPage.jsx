@@ -3,18 +3,12 @@ import { Link } from "react-router-dom";
 import { ReactComponent as Logo } from "../../images/logo.svg";
 import "./AuthPage.scss";
 
-function AuthPage({
-  content,
-  children,
-  isValid,
-  error,
-  handleRegister,
-  values,
-}) {
+function AuthPage({ content, children, isValid, error, handler, values }) {
   const { title, buttonText, captionText, linkText, path } = content;
   const handleSubmit = (evt) => {
     evt.preventDefault();
-    handleRegister(values);
+    console.log(values);
+    handler(values);
   };
   return (
     <main className='auth'>

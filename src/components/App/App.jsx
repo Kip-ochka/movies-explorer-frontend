@@ -29,7 +29,7 @@ function App() {
       .signIn(data)
       .then((res) => {
         setIsLogin(true);
-        navigate("/sigin");
+        navigate("/movies");
       })
       .catch((err) => {
         setError(err.message);
@@ -43,6 +43,7 @@ function App() {
       .signUp(data)
       .then((res) => {
         setIsLogin(true);
+        navigate("/signin");
       })
       .catch((err) => {
         setError(err.message);
@@ -65,7 +66,10 @@ function App() {
                 <Register error={error} handleRegister={handleRegister} />
               }
             />
-            <Route path='/signin' element={<Login />} />
+            <Route
+              path='/signin'
+              element={<Login error={error} handleLogin={handleLogin} />}
+            />
             <Route path='/' element={<Main />} />
             <Route
               path='/profile'

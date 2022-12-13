@@ -12,6 +12,7 @@ function Register({ error, handleRegister }) {
     linkText: "Войти",
     path: "/signin",
   };
+
   const {
     values,
     handleChange,
@@ -31,7 +32,7 @@ function Register({ error, handleRegister }) {
       content={content}
       isValid={isValid}
       error={error}
-      handleRegister={handleRegister}
+      handler={handleRegister}
       values={values}
     >
       <FormInput

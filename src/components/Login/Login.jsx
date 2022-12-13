@@ -1,16 +1,16 @@
-import React from 'react'
-import AuthPage from '../AuthPage/AuthPage'
-import FormInput from '../FormInput/FormInput'
-import { useFormAndValidation } from '../../utils/hooks/useFormAndValidation'
+import React from "react";
+import AuthPage from "../AuthPage/AuthPage";
+import FormInput from "../FormInput/FormInput";
+import { useFormAndValidation } from "../../utils/hooks/useFormAndValidation";
 
-function Login() {
+function Login({ error, handleLogin }) {
   const content = {
-    title: 'Рады видеть!',
-    buttonText: 'Войти',
-    captionText: 'Ещё не зарегистрированы?',
-    linkText: 'Регистрация',
-    path: '/signup',
-  }
+    title: "Рады видеть!",
+    buttonText: "Войти",
+    captionText: "Ещё не зарегистрированы?",
+    linkText: "Регистрация",
+    path: "/signup",
+  };
 
   const {
     values,
@@ -20,14 +20,20 @@ function Login() {
     resetForm,
     setValues,
     setIsValid,
-  } = useFormAndValidation()
+  } = useFormAndValidation();
 
   React.useEffect(() => {
-    resetForm()
-  }, [])
+    resetForm();
+  }, []);
 
   return (
-    <AuthPage content={content} isValid={isValid}>
+    <AuthPage
+      content={content}
+      isValid={isValid}
+      error={error}
+      handler={handleLogin}
+      values={values}
+    >
       <FormInput
         label='E-mail'
         type='email'
@@ -47,7 +53,7 @@ function Login() {
         isValid={isValid}
       />
     </AuthPage>
-  )
+  );
 }
 
-export default Login
+export default Login;

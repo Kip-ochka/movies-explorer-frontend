@@ -10,19 +10,20 @@ class MainApi {
     }
     return res.json();
   }
-  signIn({ email, password, name }) {
+  signIn({ email, password }) {
     return fetch(`${this._url}/signin`, {
       method: "POST",
       headers: this._headers,
-      body: JSON.stringify({ email, password, name }),
+      body: JSON.stringify({ email, password }),
       credentials: this._isCredantials,
     }).then(this._getResponse);
   }
-  signUp(email, password) {
+  signUp({name, email, password}) {
+    console.log(name, email, password);
     return fetch(`${this._url}/signup`, {
       method: "POST",
       headers: this._headers,
-      body: JSON.stringify({ email, password }),
+      body: JSON.stringify({name, email, password}),
       credentials: this._isCredantials,
     }).then(this._getResponse);
   }
