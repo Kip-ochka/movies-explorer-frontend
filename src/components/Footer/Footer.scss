@@ -1,0 +1,103 @@
+@import '../../utils/scss/variables.scss';
+
+.footer {
+  width: 100%;
+  background-color: $bg-color-main;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  &__inner {
+    width: 100%;
+  }
+  &__caption {
+    margin: 77px 0 20px 0;
+    padding: 0;
+    text-align: center;
+    color: #8b8b8b;
+    font-family: 'Inter', Arial, Helvetica, sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 13px;
+    line-height: 16px;
+    user-select: none;
+  }
+  &__wrapper {
+    border-top: 1px solid #424242;
+    display: flex;
+    justify-content: space-between;
+    margin: 0 70px;
+    padding: 20px 0;
+  }
+  &__date {
+    font-family: 'Inter', Arial, Helvetica, sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 13px;
+    line-height: 16px;
+    color: $text-color-main;
+    margin: 0;
+    user-select: none;
+  }
+  &__links {
+    display: flex;
+    flex-direction: row;
+  }
+  &__links-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    gap: 20px;
+  }
+  &__links-item {
+  }
+  &__link {
+    text-decoration: none;
+    font-family: 'Inter', Arial, Helvetica, sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 13px;
+    line-height: 16px;
+    color: $text-color-main;
+    &:hover {
+      opacity: 0.7;
+    }
+  }
+  @media screen and (max-width: 1279px) {
+    &__wrapper {
+      padding: 20px 0;
+      margin: 0 30px;
+    }
+  }
+  @media screen and (max-width: 767px) {
+    &__inner {
+      width: 100%;
+      margin: 0 auto;
+    }
+    &__wrapper {
+      padding: 30px 0 20px;
+      margin: 0 10px;
+      gap: 30px;
+      flex-direction: column-reverse;
+      align-items: center;
+    }
+    &__links-list {
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+    }
+    &__link-item {
+      max-height: 15px;
+    }
+    &__link {
+      font-size: 12px;
+      line-height: 15px;
+    }
+    &__date {
+      color: $text-color-third;
+    }
+    &__caption {
+      margin: 79px 0 21px 0;
+    }
+  }
+}

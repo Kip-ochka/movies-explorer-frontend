@@ -1,0 +1,106 @@
+@import '../../utils/scss/variables.scss';
+
+.card {
+  width: 270px;
+  height: 230px;
+  &:hover {
+    .card__delete {
+      display: block;
+    }
+  }
+  &__trailer {
+    display: flex;
+    padding: 0;
+    margin: 0;
+  }
+  &__image {
+    width: 270px;
+    height: 151px;
+  }
+  &__title-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 10px 0 0;
+    padding: 0 0 13px 0;
+    border-bottom: 1px solid #424242;
+    min-height: 24px;
+  }
+  &__title {
+    font-family: 'Inter', Arial, Helvetica, sans-serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 13px;
+    line-height: 16px;
+    color: $text-color-main;
+    margin: 0;
+    padding: 0;
+    max-width: 226px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
+  &__like {
+    background-image: url(../../images/nonlike.svg);
+    background-color: #313131;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    border: none;
+    background-repeat: no-repeat;
+    background-position: center;
+    cursor: pointer;
+    display: block;
+    &_type_active {
+      background-image: url(../../images/like.svg);
+    }
+    &:hover {
+      opacity: 0.8;
+    }
+  }
+  &__delete {
+    background-image: url(../../images/delete.svg);
+    background-color: #313131;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    border: none;
+    background-repeat: no-repeat;
+    background-position: center;
+    cursor: pointer;
+    display: none;
+    &:hover {
+      opacity: 0.8;
+    }
+  }
+  &__duration {
+    font-family: 'Inter', Arial, Helvetica, sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 11px;
+    line-height: 13px;
+    display: flex;
+    align-items: center;
+    color: $text-color-third;
+    padding: 6px 0 0 0;
+    margin: 0;
+  }
+  @media screen and (max-width: 1279px) {
+    width: 339px;
+    height: 269px;
+    &__image {
+      width: 339px;
+      height: 190px;
+    }
+  }
+  @media screen and (max-width: 767px) {
+    width: 300px;
+    height: 244px;
+    &__image {
+      width: 300px;
+      height: 168px;
+    }
+    &__title-wrapper {
+      padding: 0 0 25px 0;
+    }
+  }
+}

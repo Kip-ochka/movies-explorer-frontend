@@ -1,0 +1,103 @@
+@import '../../utils/scss/variables.scss';
+
+.header {
+  width: 100%;
+  background-color: $bg-color-first-section;
+  display: flex;
+  justify-content: center;
+  max-height: 74px;
+  &_type_black {
+    background-color: $bg-color-main;
+  }
+  &__inner {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    padding: 18px 70px;
+    box-sizing: border-box;
+  }
+  &__wrapper {
+    display: flex;
+    gap: 30px;
+    justify-content: space-between;
+    align-items: center;
+  }
+  &__logo {
+    width: 38px;
+    height: 38px;
+  }
+  &__link {
+    text-decoration: none;
+    font-family: 'Inter', Arial, Helvetica, sans-serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 16px;
+    &_type_signup {
+      color: $text-color-main;
+      &:hover {
+        opacity: 0.7;
+      }
+    }
+    &_type_signin {
+      color: $text-color-second;
+      padding: 8px 20px;
+      background-color: $accent-green;
+      border-radius: 3px;
+      &:hover {
+        opacity: 0.8;
+      }
+    }
+  }
+  &__text {
+    padding: 0;
+    margin: 0;
+  }
+  &__button {
+    background-image: url(../../images/burger.svg);
+    width: 44px;
+    height: 44px;
+    background-color: transparent;
+    border: none;
+    display: none;
+    cursor: pointer;
+    padding: 0;
+  }
+
+  @media screen and (max-width: 768px) {
+    &__inner {
+      width: 100%;
+      padding: 15px 30px;
+    }
+
+    &__button {
+      display: flex;
+      &_opened {
+        background-image: url(../../images/burger-close.svg);
+        background-position: center;
+        width: 22px;
+        height: 22px;
+        position: fixed;
+        z-index: 15;
+        top: 23px;
+        right: 23px;
+      }
+    }
+  }
+  @media screen and (max-width: 450px) {
+    &__inner {
+      width: 100%;
+      padding: 15px 14px;
+    }
+    &__wrapper {
+      gap: 26px;
+    }
+    &__link {
+      font-size: 10px;
+      line-height: 16px;
+      &_type_signin {
+        padding: 5px 12px;
+      }
+    }
+  }
+}
