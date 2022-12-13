@@ -1,13 +1,21 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
-import { ReactComponent as Logo } from '../../images/logo.svg'
-import './AuthPage.scss'
+import React from "react";
+import { Link } from "react-router-dom";
+import { ReactComponent as Logo } from "../../images/logo.svg";
+import "./AuthPage.scss";
 
-function AuthPage({ content, children, isValid }) {
-  const { title, buttonText, captionText, linkText, path } = content
+function AuthPage({
+  content,
+  children,
+  isValid,
+  error,
+  handleRegister,
+  values,
+}) {
+  const { title, buttonText, captionText, linkText, path } = content;
   const handleSubmit = (evt) => {
-    evt.preventDefault()
-  }
+    evt.preventDefault();
+    handleRegister(values);
+  };
   return (
     <main className='auth'>
       <div className='auth__inner'>
@@ -19,10 +27,10 @@ function AuthPage({ content, children, isValid }) {
           <fieldset className='auth__fieldset'>{children}</fieldset>
           <div className='auth__button-section-wrapper'>
             <div className='auth__button-wrapper'>
-              <span className='auth__error auth__error_active'>Ошибка!</span>
+              <span className='auth__error auth__error_active'>{error}</span>
               <button
                 className={`auth__button-submit ${
-                  isValid ? '' : 'auth__button-submit_disable'
+                  isValid ? "" : "auth__button-submit_disable"
                 }`}
                 type='submit'
                 disabled={!isValid}
@@ -40,7 +48,7 @@ function AuthPage({ content, children, isValid }) {
         </form>
       </div>
     </main>
-  )
+  );
 }
 
-export default AuthPage
+export default AuthPage;

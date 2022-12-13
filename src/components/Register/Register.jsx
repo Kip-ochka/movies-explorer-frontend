@@ -1,17 +1,17 @@
-import React from 'react'
-import AuthPage from '../AuthPage/AuthPage'
-import FormInput from '../FormInput/FormInput'
-import { useFormAndValidation } from '../../utils/hooks/useFormAndValidation'
-import { EMAIL_PATTERN } from '../../utils/variables'
+import React from "react";
+import AuthPage from "../AuthPage/AuthPage";
+import FormInput from "../FormInput/FormInput";
+import { useFormAndValidation } from "../../utils/hooks/useFormAndValidation";
+import { EMAIL_PATTERN } from "../../utils/variables";
 
-function Register() {
+function Register({ error, handleRegister }) {
   const content = {
-    title: 'Добро пожаловать!',
-    buttonText: 'Зарегистрироваться',
-    captionText: 'Уже зарегистрированы?',
-    linkText: 'Войти',
-    path: '/signin',
-  }
+    title: "Добро пожаловать!",
+    buttonText: "Зарегистрироваться",
+    captionText: "Уже зарегистрированы?",
+    linkText: "Войти",
+    path: "/signin",
+  };
   const {
     values,
     handleChange,
@@ -20,14 +20,20 @@ function Register() {
     resetForm,
     setValues,
     setIsValid,
-  } = useFormAndValidation()
+  } = useFormAndValidation();
 
   React.useEffect(() => {
-    resetForm()
-  }, [])
+    resetForm();
+  }, []);
 
   return (
-    <AuthPage content={content} isValid={isValid}>
+    <AuthPage
+      content={content}
+      isValid={isValid}
+      error={error}
+      handleRegister={handleRegister}
+      values={values}
+    >
       <FormInput
         label='Имя'
         type='name'
@@ -57,7 +63,7 @@ function Register() {
         isValid={isValid}
       />
     </AuthPage>
-  )
+  );
 }
 
-export default Register
+export default Register;
