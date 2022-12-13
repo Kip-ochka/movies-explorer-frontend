@@ -9,6 +9,7 @@ import Movies from '../Movies/Movies'
 import NotFoundPage from '../NotFoundPage/NotFoundPage'
 import Preloader from '../Preloader/Preloader'
 import Profile from '../Profile/Profile'
+import { ProtectedRoute } from '../ProtectedRoute/ProtectedRoute'
 import Register from '../Register/Register'
 import SavedMovies from '../SavedMovies/SavedMovies'
 import './App.scss'
@@ -29,14 +30,32 @@ function App() {
         <>
           {isPageWithHeader ? <Header isLogin={isLogin} /> : null}
           <Routes>
-            <Route path='/' element={<Main />} />
             <Route path='/signup' element={<Register />} />
             <Route path='/signin' element={<Login />} />
-            <Route path='/profile' element={<Profile />} />
-            <Route path='/movies' element={<Movies location={location} />} />
+            <Route path='/' element={<Main />} />
+            <Route
+              path='/profile'
+              element={
+                <ProtectedRoute isLogin={isLogin}>
+                  <Profile />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path='/movies'
+              element={
+                <ProtectedRoute isLogin={isLogin}>
+                  <Movies location={location} />
+                </ProtectedRoute>
+              }
+            />
             <Route
               path='/saved-movies'
-              element={<SavedMovies location={location} />}
+              element={
+                <ProtectedRoute isLogin={isLogin}>
+                  <SavedMovies location={location} />
+                </ProtectedRoute>
+              }
             />
             <Route path='*' element={<NotFoundPage />} />
           </Routes>

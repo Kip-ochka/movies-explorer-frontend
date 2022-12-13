@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import { ReactComponent as Logo } from '../../images/logo.svg'
 import './AuthPage.scss'
 
-function AuthPage({ content, children }) {
+function AuthPage({ content, children, isValid }) {
   const { title, buttonText, captionText, linkText, path } = content
   const handleSubmit = (evt) => {
     evt.preventDefault()
@@ -21,8 +21,11 @@ function AuthPage({ content, children }) {
             <div className='auth__button-wrapper'>
               <span className='auth__error auth__error_active'>Ошибка!</span>
               <button
-                className='auth__button-submit auth__button-submit_disable'
+                className={`auth__button-submit ${
+                  isValid ? '' : 'auth__button-submit_disable'
+                }`}
                 type='submit'
+                disabled={!isValid}
               >
                 {buttonText}
               </button>

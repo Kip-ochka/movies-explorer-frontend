@@ -1,6 +1,7 @@
 import React from 'react'
 import AuthPage from '../AuthPage/AuthPage'
 import FormInput from '../FormInput/FormInput'
+import { useFormAndValidation } from '../../utils/hooks/useFormAndValidation'
 
 function Login() {
   const content = {
@@ -10,15 +11,41 @@ function Login() {
     linkText: 'Регистрация',
     path: '/signup',
   }
-  const inputsData = [
-    { inputLabel: 'E-mail', type: 'email', error: 'error' },
-    { inputLabel: 'Пароль', type: 'password', error: 'error' },
-  ]
+
+  const {
+    values,
+    handleChange,
+    errors,
+    isValid,
+    resetForm,
+    setValues,
+    setIsValid,
+  } = useFormAndValidation()
+
+  React.useEffect(() => {
+    resetForm()
+  }, [])
+
   return (
-    <AuthPage content={content}>
-      {inputsData.map((inputData, index) => {
-        return <FormInput inputData={inputData} key={index} />
-      })}
+    <AuthPage content={content} isValid={isValid}>
+      <FormInput
+        label='E-mail'
+        type='email'
+        name='email'
+        values={values.email}
+        handleChange={handleChange}
+        errors={errors.email}
+        isValid={isValid}
+      />
+      <FormInput
+        label='Пароль'
+        type='password'
+        name='password'
+        values={values.password}
+        handleChange={handleChange}
+        errors={errors.password}
+        isValid={isValid}
+      />
     </AuthPage>
   )
 }

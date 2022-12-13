@@ -13,7 +13,7 @@ function SearchForm() {
     }, 500)
   }
   return (
-    <form className='search'>
+    <form className='search' required>
       <div className='search__inner'>
         <fieldset className='search__fieldset'>
           <div className='search__input-wrapper'>

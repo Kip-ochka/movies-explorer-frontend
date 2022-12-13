@@ -29,10 +29,6 @@
       outline: none;
       border: 1px solid $accent-green;
     }
-    &_error {
-      color: $accent-red;
-      border: 1px solid $accent-red;
-    }
   }
 
   &__error {
@@ -44,7 +40,8 @@
     color: $accent-red;
     display: none;
     position: absolute;
-    bottom: 10px;
+    bottom: -5px;
+    left: 3px;
     &_active {
       display: inline;
     }

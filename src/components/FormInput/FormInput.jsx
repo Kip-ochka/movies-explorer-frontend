@@ -1,24 +1,36 @@
 import React from 'react'
 import './FormInput.scss'
-function FormInput({ inputData }) {
-  const { inputLabel, type, error, errorStatus } = inputData
+function FormInput({
+  label,
+  type,
+  name,
+  values,
+  handleChange,
+  errors,
+  isValid,
+  ...restProp
+}) {
   return (
     <div className='form-input'>
-      <label className='form-input__label'>{inputLabel}</label>
+      <label className='form-input__label'>{label}</label>
       <input
         className={`form-input__input ${
-          errorStatus && 'form-input__input_error'
+          isValid ? '' : 'form-input__input_error'
         }`}
         type={type}
         required
-        minlenth='3'
+        minLength='2'
+        name={name}
+        value={values || ''}
+        onChange={handleChange}
+        {...restProp}
       />
       <span
         className={`form-input__error ${
-          errorStatus && 'form-input__error_active'
+          isValid ? '' : 'form-input__error_active'
         }`}
       >
-        {error}
+        {errors}
       </span>
     </div>
   )
