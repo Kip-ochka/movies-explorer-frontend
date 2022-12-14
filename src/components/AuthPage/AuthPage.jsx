@@ -7,7 +7,6 @@ function AuthPage({ content, children, isValid, error, handler, values }) {
   const { title, buttonText, captionText, linkText, path } = content;
   const handleSubmit = (evt) => {
     evt.preventDefault();
-    console.log(values);
     handler(values);
   };
   return (
