@@ -24,6 +24,7 @@ function App() {
   const [isLogin, setIsLogin] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [currentUser, setCurrentUser] = useState(null)
+  const [isError, setIsError] = useState(false)
   const [error, setError] = useState(null)
   const isPageWithHeader = pageWithHeader.includes(location)
   const isPageWithFooter = pageWithFooter.includes(location)
@@ -35,9 +36,13 @@ function App() {
       .then((res) => {
         setCurrentUser(res)
         setIsLogin(true)
+        setIsError(false)
       })
       .catch((err) => {
-        err.then((err) => console.log(err.message))
+        err.then((err) => {
+          setIsError(true)
+          console.log(err.message)
+        })
       })
       .finally(() => {
         setIsLoading(false)
@@ -61,11 +66,12 @@ function App() {
         handleGetProfile()
       })
       .catch((err) => {
-        err.then((err) => {
-          setError(err.message)
-        })
+        handleError(err)
       })
-      .finally(() => setIsLoading(false))
+      .finally(() => {
+        setError(null)
+        setIsLoading(false)
+      })
   }
 
   const handleRegister = (data) => {
@@ -75,12 +81,11 @@ function App() {
       .then((res) => {
         setCurrentUser(res)
         setIsLogin(true)
-        navigate('/signin')
+        setIsError(false)
+        navigate('/movies')
       })
       .catch((err) => {
-        err.then((err) => {
-          setError(err.message)
-        })
+        handleError(err)
       })
       .finally(() => {
         setIsLoading(false)
@@ -94,10 +99,11 @@ function App() {
       .then((res) => {
         setCurrentUser(null)
         setIsLogin(false)
+        setIsError(false)
         navigate('/')
       })
       .catch((err) => {
-        setError(err)
+        handleError(err)
       })
       .finally(() => {
         setIsLoading(false)
@@ -110,13 +116,25 @@ function App() {
       .updateUserInfo(userData)
       .then((res) => {
         setCurrentUser(res)
+        setError('Вы успешно отредактировалия профиль')
+        setIsError(false)
+        setTimeout(() => setError(null), 2000)
       })
       .catch((err) => {
-        setError(err)
+        handleError(err)
       })
       .finally(() => {
         setIsLoading(false)
       })
+  }
+
+  const handleError = (err) => {
+    err.then((err) => {
+      setIsError(true)
+      setError(err.message)
+      setTimeout(() => setError(null), 2000)
+      setTimeout(() => setIsError(false), 2000)
+    })
   }
   return (
     <CurrentUserContext.Provider value={currentUser}>
@@ -145,7 +163,8 @@ function App() {
                     <Profile
                       handleLogout={handleLogout}
                       handleUpdateUserInfo={handleUpdateUserInfo}
-                      handleGetProfile={handleGetProfile}
+                      error={error}
+                      isError={isError}
                     />
                   </ProtectedRoute>
                 }

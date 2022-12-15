@@ -112,13 +112,12 @@
     font-size: 11px;
     line-height: 13px;
     color: $accent-red;
-    visibility: hidden;
     min-height: 14px;
     text-align: center;
     min-height: max-content;
     margin: 0 0 20px 0;
-    &_active {
-      visibility: visible;
+    &_noterror {
+      color: $accent-green;
     }
   }
   &__redacted {

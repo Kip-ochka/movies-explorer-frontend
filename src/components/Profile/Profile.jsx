@@ -4,7 +4,7 @@ import { useFormAndValidation } from '../../utils/hooks/useFormAndValidation'
 import { EMAIL_PATTERN } from '../../utils/variables'
 import './Profile.scss'
 
-function Profile({ handleLogout, handleUpdateUserInfo, handleGetProfile }) {
+function Profile({ handleLogout, handleUpdateUserInfo, error, isError }) {
   const [isMatch, setIsMatch] = React.useState(true)
   const currentUser = React.useContext(CurrentUserContext)
   const {
@@ -76,7 +76,13 @@ function Profile({ handleLogout, handleUpdateUserInfo, handleGetProfile }) {
             </label>
           </fieldset>
           <div className="profile__redacted-wrapper">
-            <span className="profile__error">{'error'}</span>
+            <span
+              className={`profile__error ${
+                isError ? '' : 'profile__error_noterror'
+              }`}
+            >
+              {error}
+            </span>
             <div className="profile__button-wrapper">
               <button
                 className="profile__redacted"
