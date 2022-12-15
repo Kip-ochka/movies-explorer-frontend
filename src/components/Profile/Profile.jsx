@@ -4,7 +4,7 @@ import { useFormAndValidation } from '../../utils/hooks/useFormAndValidation'
 import { EMAIL_PATTERN } from '../../utils/variables'
 import './Profile.scss'
 
-function Profile({ handleLogout, handleUpdateUserInfo }) {
+function Profile({ handleLogout, handleUpdateUserInfo, handleGetProfile }) {
   const [isMatch, setIsMatch] = React.useState(true)
   const currentUser = React.useContext(CurrentUserContext)
   const {
@@ -34,7 +34,7 @@ function Profile({ handleLogout, handleUpdateUserInfo }) {
   }
 
   React.useEffect(() => {
-    resetForm({ name: currentUser.name, email: currentUser.email })
+    resetForm({ name: currentUser?.name, email: currentUser?.email })
   }, [currentUser])
 
   return (
@@ -44,7 +44,9 @@ function Profile({ handleLogout, handleUpdateUserInfo }) {
         <form className="profile__form">
           <fieldset className="profile__fieldset">
             <label className="profile__input-wrapper">
-              <span>{errors.name}</span>
+              <span className="profile__input-error profile__input-error_type_top">
+                {errors.name}
+              </span>
               <span className="profile__label">Имя</span>
               <input
                 className="profile__input"
@@ -68,7 +70,9 @@ function Profile({ handleLogout, handleUpdateUserInfo }) {
                 required
                 pattern={EMAIL_PATTERN}
               />
-              <span>{errors.email}</span>
+              <span className="profile__input-error profile__input-error_type_bot">
+                {errors.email}
+              </span>
             </label>
           </fieldset>
           <div className="profile__redacted-wrapper">

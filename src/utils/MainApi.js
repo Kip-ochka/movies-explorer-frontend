@@ -6,7 +6,7 @@ class MainApi {
   }
   _getResponse(res) {
     if (!res.ok) {
-      return Promise.reject(`Error: ${res.status}`)
+      return Promise.reject(res.json())
     }
     return res.json()
   }

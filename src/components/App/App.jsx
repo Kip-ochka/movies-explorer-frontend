@@ -37,7 +37,7 @@ function App() {
         setIsLogin(true)
       })
       .catch((err) => {
-        console.log(err)
+        err.then((err) => console.log(err.message))
       })
       .finally(() => {
         setIsLoading(false)
@@ -57,8 +57,13 @@ function App() {
         setIsLogin(true)
         navigate('/movies')
       })
+      .then(() => {
+        handleGetProfile()
+      })
       .catch((err) => {
-        setError(err.message)
+        err.then((err) => {
+          setError(err.message)
+        })
       })
       .finally(() => setIsLoading(false))
   }
@@ -73,7 +78,9 @@ function App() {
         navigate('/signin')
       })
       .catch((err) => {
-        setError(err.message)
+        err.then((err) => {
+          setError(err.message)
+        })
       })
       .finally(() => {
         setIsLoading(false)
@@ -138,6 +145,7 @@ function App() {
                     <Profile
                       handleLogout={handleLogout}
                       handleUpdateUserInfo={handleUpdateUserInfo}
+                      handleGetProfile={handleGetProfile}
                     />
                   </ProtectedRoute>
                 }
