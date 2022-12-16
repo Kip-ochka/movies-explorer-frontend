@@ -16,7 +16,6 @@ import Register from '../Register/Register'
 import SavedMovies from '../SavedMovies/SavedMovies'
 
 import './App.scss'
-import userEvent from '@testing-library/user-event'
 
 function App() {
   const location = useLocation().pathname
@@ -129,6 +128,11 @@ function App() {
   }
 
   const handleError = (err) => {
+    if (err.status === 401) {
+      setIsLogin(false)
+      setCurrentUser(null)
+      navigate('/')
+    }
     err.then((err) => {
       setIsError(true)
       setError(err.message)
