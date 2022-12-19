@@ -16,6 +16,7 @@ import Register from '../Register/Register'
 import SavedMovies from '../SavedMovies/SavedMovies'
 
 import './App.scss'
+import InfoPopup from '../InfoPopup/InfoPopup'
 
 function App() {
   const location = useLocation().pathname
@@ -24,7 +25,8 @@ function App() {
   const [isLoading, setIsLoading] = useState(false)
   const [currentUser, setCurrentUser] = useState(null)
   const [isError, setIsError] = useState(false)
-  const [error, setError] = useState(null)
+  const [message, setMessage] = useState(null)
+  const [isOpenPopup, setIsOpenPopup] = useState(false)
   const isPageWithHeader = pageWithHeader.includes(location)
   const isPageWithFooter = pageWithFooter.includes(location)
 
@@ -35,7 +37,7 @@ function App() {
       .then((res) => {
         setCurrentUser(res)
         setIsLogin(true)
-        setIsError(false)
+        hundleSuccess('Вы успешно были авторизованы')
       })
       .catch((err) => {
         err.then((err) => {
@@ -60,6 +62,7 @@ function App() {
         setCurrentUser(res.user)
         setIsLogin(true)
         navigate('/movies')
+        hundleSuccess('Вы успешно были авторизованы')
       })
       .then(() => {
         handleGetProfile()
@@ -68,7 +71,7 @@ function App() {
         handleError(err)
       })
       .finally(() => {
-        setError(null)
+        setMessage(null)
         setIsLoading(false)
       })
   }
@@ -80,8 +83,8 @@ function App() {
       .then((res) => {
         setCurrentUser(res)
         setIsLogin(true)
-        setIsError(false)
         navigate('/movies')
+        hundleSuccess('Вы успешно были зарегистрированы и авторизованы')
       })
       .catch((err) => {
         handleError(err)
@@ -98,8 +101,8 @@ function App() {
       .then((res) => {
         setCurrentUser(null)
         setIsLogin(false)
-        setIsError(false)
         navigate('/')
+        hundleSuccess('Вы успешно вышли, будем ждать Вас вновь')
       })
       .catch((err) => {
         handleError(err)
@@ -115,9 +118,11 @@ function App() {
       .updateUserInfo(userData)
       .then((res) => {
         setCurrentUser(res)
-        setError('Вы успешно отредактировалия профиль')
+        setMessage('Вы успешно отредактировалия профиль')
         setIsError(false)
-        setTimeout(() => setError(null), 2000)
+        setIsOpenPopup(true)
+        setTimeout(() => setIsOpenPopup(false), 2000)
+        setTimeout(() => setMessage(null), 3000)
       })
       .catch((err) => {
         handleError(err)
@@ -135,10 +140,20 @@ function App() {
     }
     err.then((err) => {
       setIsError(true)
-      setError(err.message)
-      setTimeout(() => setError(null), 2000)
-      setTimeout(() => setIsError(false), 2000)
+      setIsOpenPopup(true)
+      setMessage(err.message)
+      setTimeout(() => setIsOpenPopup(false), 2000)
+      setTimeout(() => setMessage(null), 3000)
+      setTimeout(() => setIsError(false), 3000)
     })
+  }
+
+  const hundleSuccess = (message) => {
+    setIsError(false)
+    setMessage(message)
+    setIsOpenPopup(true)
+    setTimeout(() => setIsOpenPopup(false), 2000)
+    setTimeout(() => setMessage(null), 3000)
   }
   return (
     <CurrentUserContext.Provider value={currentUser}>
@@ -152,12 +167,12 @@ function App() {
               <Route
                 path="/signup"
                 element={
-                  <Register error={error} handleRegister={handleRegister} />
+                  <Register message={message} handleRegister={handleRegister} />
                 }
               />
               <Route
                 path="/signin"
-                element={<Login error={error} handleLogin={handleLogin} />}
+                element={<Login message={message} handleLogin={handleLogin} />}
               />
               <Route path="/" element={<Main />} />
               <Route
@@ -167,7 +182,7 @@ function App() {
                     <Profile
                       handleLogout={handleLogout}
                       handleUpdateUserInfo={handleUpdateUserInfo}
-                      error={error}
+                      message={message}
                       isError={isError}
                     />
                   </ProtectedRoute>
@@ -192,6 +207,11 @@ function App() {
               <Route path="*" element={<NotFoundPage />} />
             </Routes>
             {isPageWithFooter ? <Footer /> : null}
+            <InfoPopup
+              isError={isError}
+              message={message}
+              isOpenPopup={isOpenPopup}
+            />
           </>
         )}
       </div>

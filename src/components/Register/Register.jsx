@@ -1,17 +1,17 @@
-import React from "react";
-import AuthPage from "../AuthPage/AuthPage";
-import FormInput from "../FormInput/FormInput";
-import { useFormAndValidation } from "../../utils/hooks/useFormAndValidation";
-import { EMAIL_PATTERN } from "../../utils/variables";
+import React from 'react'
+import AuthPage from '../AuthPage/AuthPage'
+import FormInput from '../FormInput/FormInput'
+import { useFormAndValidation } from '../../utils/hooks/useFormAndValidation'
+import { EMAIL_PATTERN } from '../../utils/variables'
 
-function Register({ error, handleRegister }) {
+function Register({ message, handleRegister }) {
   const content = {
-    title: "Добро пожаловать!",
-    buttonText: "Зарегистрироваться",
-    captionText: "Уже зарегистрированы?",
-    linkText: "Войти",
-    path: "/signin",
-  };
+    title: 'Добро пожаловать!',
+    buttonText: 'Зарегистрироваться',
+    captionText: 'Уже зарегистрированы?',
+    linkText: 'Войти',
+    path: '/signin',
+  }
 
   const {
     values,
@@ -21,33 +21,33 @@ function Register({ error, handleRegister }) {
     resetForm,
     setValues,
     setIsValid,
-  } = useFormAndValidation();
+  } = useFormAndValidation()
 
   React.useEffect(() => {
-    resetForm();
-  }, []);
+    resetForm()
+  }, [])
 
   return (
     <AuthPage
       content={content}
       isValid={isValid}
-      error={error}
+      message={message}
       handler={handleRegister}
       values={values}
     >
       <FormInput
-        label='Имя'
-        type='name'
-        name='name'
+        label="Имя"
+        type="name"
+        name="name"
         values={values.name}
         handleChange={handleChange}
         errors={errors.name}
         isValid={isValid}
       />
       <FormInput
-        label='E-mail'
-        type='email'
-        name='email'
+        label="E-mail"
+        type="email"
+        name="email"
         values={values.email}
         handleChange={handleChange}
         errors={errors.email}
@@ -55,16 +55,16 @@ function Register({ error, handleRegister }) {
         pattern={EMAIL_PATTERN}
       />
       <FormInput
-        label='Пароль'
-        type='password'
-        name='password'
+        label="Пароль"
+        type="password"
+        name="password"
         values={values.password}
         handleChange={handleChange}
         errors={errors.password}
         isValid={isValid}
       />
     </AuthPage>
-  );
+  )
 }
 
-export default Register;
+export default Register

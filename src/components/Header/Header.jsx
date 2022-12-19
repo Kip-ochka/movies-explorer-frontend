@@ -21,9 +21,9 @@ function Header({ isLogin }) {
   }
   return (
     <header className={isMainLokation ? 'header' : 'header header_type_black'}>
-      <div className='header__inner'>
-        <Link to='/' className='header__link'>
-          <Logo className='header__logo' />
+      <div className="header__inner">
+        <Link to="/" className="header__link">
+          <Logo className="header__logo" />
         </Link>
         {isLogin ? (
           <>
@@ -36,18 +36,18 @@ function Header({ isLogin }) {
             <Navigation isOpen={burgerIsOpen} onClose={handleCloseBurger} />
           </>
         ) : (
-          <div className='header__wrapper'>
+          <div className="header__wrapper">
             <Link
-              className='header__link header__link_type_signup'
-              to='/signup'
+              className="header__link header__link_type_signup"
+              to="/signup"
             >
-              <p className='header__text'>Регистрация</p>
+              <p className="header__text">Регистрация</p>
             </Link>
             <Link
-              className='header__link header__link_type_signin'
-              to='/signin'
+              className="header__link header__link_type_signin"
+              to="/signin"
             >
-              <p className='header__text'>Войти</p>
+              <p className="header__text">Войти</p>
             </Link>
           </div>
         )}

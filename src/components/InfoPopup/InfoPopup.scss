@@ -1,0 +1,44 @@
+@import '../../utils/scss/variables.scss';
+
+.info-popup {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  min-width: 100px;
+  max-width: 50%;
+  padding: 16px;
+  margin: 0;
+  border-radius: 5px;
+  position: fixed;
+  top: -100%;
+  right: 20px;
+  border-radius: 5px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
+  transition: top 1s ease;
+  gap: 10px;
+  &_type_error {
+    background-color: $accent-red;
+  }
+  &_type_success {
+    background-color: $accent-green;
+  }
+  &_opened {
+    top: 75px;
+  }
+  &__icon {
+    min-width: 50px;
+    max-width: 78px;
+    min-height: 50px;
+    max-height: 78px;
+  }
+  &__text {
+    font-size: 14px;
+    color: $text-color-main;
+    font-family: 'Inter', Arial, Helvetica, sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 20px;
+  }
+}
