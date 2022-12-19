@@ -2,7 +2,7 @@ import React from 'react'
 import MoviesCard from '../MoviesCard/MoviesCard'
 import './MoviesCardList.scss'
 
-function MoviesCardList({ location }) {
+function MoviesCardList({ location, isMovieResultError, searchError }) {
   let comp = 16
   let tab = 8
   let mob = 4
@@ -27,10 +27,16 @@ function MoviesCardList({ location }) {
   }, [])
 
   return (
-    <section className='card-list'>
-      <ul className='card-list__inner'>{slicedArr.map((item) => item)}</ul>
-      <div className='card-list__button-wrapper'>
-        <button className='card-list__more-button'>Ещё</button>
+    <section className="card-list">
+      <ul className="card-list__inner">
+        {isMovieResultError ? (
+          <span>{searchError}</span>
+        ) : (
+          slicedArr.map((item) => item)
+        )}
+      </ul>
+      <div className="card-list__button-wrapper">
+        <button className="card-list__more-button">Ещё</button>
       </div>
     </section>
   )

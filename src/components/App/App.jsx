@@ -4,6 +4,7 @@ import { pageWithFooter, pageWithHeader } from '../../utils/variables'
 import { CurrentUserContext } from '../../context/CurrenUser'
 import { ProtectedRoute } from '../ProtectedRoute/ProtectedRoute'
 import { mainApi } from '../../utils/MainApi.js'
+import { moviesApi } from '../../utils/MoviesApi'
 import Footer from '../Footer/Footer'
 import Header from '../Header/Header'
 import Login from '../Login/Login'
@@ -49,10 +50,6 @@ function App() {
         setIsLoading(false)
       })
   }
-
-  useEffect(() => {
-    handleGetProfile()
-  }, [])
 
   const handleLogin = (data) => {
     setIsLoading(true)
@@ -155,6 +152,28 @@ function App() {
     setTimeout(() => setIsOpenPopup(false), 2000)
     setTimeout(() => setMessage(null), 3000)
   }
+  // работа с фильмами
+  const [movies, setMovies] = useState([])
+  const [isMovieResultError, setIsMovieResultError] = useState(false)
+  const [searchError, setSearchError] = useState('')
+
+  const hundleGetMoviesFromBetFilms = (isChecked, inputValue) => {
+    moviesApi
+      .getMovies()
+      .then((res) => setMovies(res))
+      .then((res) => {})
+      .catch(() => {
+        setIsMovieResultError(true)
+        setSearchError(
+          'Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз'
+        )
+      })
+  }
+  console.log(movies)
+  useEffect(() => {
+    handleGetProfile()
+  }, [])
+
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="page">
@@ -192,7 +211,12 @@ function App() {
                 path="/movies"
                 element={
                   <ProtectedRoute isLogin={isLogin}>
-                    <Movies location={location} />
+                    <Movies
+                      location={location}
+                      hundleGetMoviesFromBetFilms={hundleGetMoviesFromBetFilms}
+                      isMovieResultError={isMovieResultError}
+                      searchError={searchError}
+                    />
                   </ProtectedRoute>
                 }
               />

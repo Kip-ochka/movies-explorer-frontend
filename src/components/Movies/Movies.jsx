@@ -5,17 +5,26 @@ import './Movies.scss'
 import MoviesCardList from '../MoviesCardList/MoviesCardList'
 import { useLocation } from 'react-router-dom'
 
-function Movies({ location }) {
+function Movies({
+  location,
+  hundleGetMoviesFromBetFilms,
+  isMovieResultError,
+  searchError,
+}) {
   const [isLoading, setIsLoading] = React.useState(false)
 
   return (
-    <main className='movies'>
-      <SearchForm />
+    <main className="movies">
+      <SearchForm hundleGetMoviesFromBetFilms={hundleGetMoviesFromBetFilms} />
       {isLoading ? (
         <Preloader />
       ) : (
         <>
-          <MoviesCardList location={location} />
+          <MoviesCardList
+            location={location}
+            isMovieResultError={isMovieResultError}
+            searchError={searchError}
+          />
         </>
       )}
     </main>
