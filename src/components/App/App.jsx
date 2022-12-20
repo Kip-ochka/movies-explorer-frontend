@@ -15,9 +15,9 @@ import Preloader from '../Preloader/Preloader'
 import Profile from '../Profile/Profile'
 import Register from '../Register/Register'
 import SavedMovies from '../SavedMovies/SavedMovies'
-
-import './App.scss'
+import useWindowSize from '../../utils/hooks/useWindowSize'
 import InfoPopup from '../InfoPopup/InfoPopup'
+import './App.scss'
 
 function App() {
   const location = useLocation().pathname
@@ -26,7 +26,7 @@ function App() {
   const [isLoading, setIsLoading] = useState(false)
   const [currentUser, setCurrentUser] = useState(null)
   const [isError, setIsError] = useState(false)
-  const [message, setMessage] = useState(null)
+  const [message, setMessage] = useState('')
   const [isOpenPopup, setIsOpenPopup] = useState(false)
   const isPageWithHeader = pageWithHeader.includes(location)
   const isPageWithFooter = pageWithFooter.includes(location)
@@ -68,7 +68,7 @@ function App() {
         handleError(err)
       })
       .finally(() => {
-        setMessage(null)
+        setMessage('')
         setIsLoading(false)
       })
   }
@@ -119,7 +119,7 @@ function App() {
         setIsError(false)
         setIsOpenPopup(true)
         setTimeout(() => setIsOpenPopup(false), 2000)
-        setTimeout(() => setMessage(null), 3000)
+        setTimeout(() => setMessage(''), 3000)
       })
       .catch((err) => {
         handleError(err)
@@ -140,7 +140,7 @@ function App() {
       setIsOpenPopup(true)
       setMessage(err.message)
       setTimeout(() => setIsOpenPopup(false), 2000)
-      setTimeout(() => setMessage(null), 3000)
+      setTimeout(() => setMessage(''), 3000)
       setTimeout(() => setIsError(false), 3000)
     })
   }
@@ -150,30 +150,72 @@ function App() {
     setMessage(message)
     setIsOpenPopup(true)
     setTimeout(() => setIsOpenPopup(false), 2000)
-    setTimeout(() => setMessage(null), 3000)
+    setTimeout(() => setMessage(''), 3000)
   }
   // работа с фильмами
   const [movies, setMovies] = useState([])
+  const [filteredMovies, setFilteredMovies] = useState([])
   const [isMovieResultError, setIsMovieResultError] = useState(false)
   const [searchError, setSearchError] = useState('')
+  const [movieListLoading, setMovieListLoading] = useState(false)
+  const [cardsQty, setCardsQty] = useState({})
+  const { width } = useWindowSize()
 
-  const hundleGetMoviesFromBetFilms = (isChecked, inputValue) => {
-    moviesApi
-      .getMovies()
-      .then((res) => setMovies(res))
-      .then((res) => {})
-      .catch(() => {
-        setIsMovieResultError(true)
-        setSearchError(
-          'Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз'
-        )
-      })
+  const getMoviesFromBetFilms = async () => {
+    setMovieListLoading(true)
+    try {
+      const movies = await moviesApi.getMovies()
+      setMovies(movies)
+      localStorage.setItem('betFilms', JSON.stringify(movies))
+      return movies
+    } catch (err) {
+      setIsMovieResultError(true)
+      setSearchError(
+        'Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз'
+      )
+    } finally {
+      setMovieListLoading(false)
+    }
   }
-  console.log(movies)
+
+  const moviesFilter = (movies, isShortFilmsCheck, searchValue) => {
+    return movies.filter((movie) => {
+      const rusName = movie.nameRU.toLowerCase()
+      const enName = movie.nameEN.toLowerCase()
+      const search = searchValue.toLowerCase()
+      const textMatch = rusName.includes(search) || enName.includes(search)
+      const durationMatch = isShortFilmsCheck ? movie.duration <= 40 : true
+      return textMatch && durationMatch
+    })
+  }
+
+  const searchFilm = async (isChecked, inputValue) => {
+    localStorage.setItem('isShortFilmChecked', isChecked)
+    localStorage.setItem('searchValue', inputValue)
+    let moviesList = localStorage.getItem('betFilms')
+    if (!moviesList) {
+      const movies = await getMoviesFromBetFilms()
+      localStorage.setItem('betFilms', JSON.stringify(movies))
+      moviesList = movies
+    }
+    const filteredMovies = moviesFilter(movies, isChecked, inputValue)
+    localStorage.setItem('filteredMovies', filteredMovies)
+    setFilteredMovies(filteredMovies)
+  }
+
+  const determineCardsQty = () => {
+    if (width >= 1280) {
+      return setCardsQty({ starCards: 16, aditionalCard: 4 })
+    }
+    if (width >= 768) {
+      return setCardsQty({ starCards: 8, aditionalCard: 2 })
+    }
+    return setCardsQty({ starCards: 5, aditionalCard: 2 })
+  }
+
   useEffect(() => {
     handleGetProfile()
   }, [])
-
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="page">
@@ -213,9 +255,10 @@ function App() {
                   <ProtectedRoute isLogin={isLogin}>
                     <Movies
                       location={location}
-                      hundleGetMoviesFromBetFilms={hundleGetMoviesFromBetFilms}
                       isMovieResultError={isMovieResultError}
                       searchError={searchError}
+                      movieListLoading={movieListLoading}
+                      searchFilm={searchFilm}
                     />
                   </ProtectedRoute>
                 }

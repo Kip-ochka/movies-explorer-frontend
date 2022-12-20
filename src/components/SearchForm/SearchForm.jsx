@@ -2,7 +2,7 @@ import React from 'react'
 import './SearchForm.scss'
 import { ReactComponent as Loop } from '../../images/loopa.svg'
 
-function SearchForm({ hundleGetMoviesFromBetFilms }) {
+function SearchForm({ searchFilm }) {
   const [validationMessage, setValidationMessage] = React.useState('')
   const [isChecked, setIsChecked] = React.useState(false)
   const [isDisabled, setIsDisabled] = React.useState(false)
@@ -16,11 +16,12 @@ function SearchForm({ hundleGetMoviesFromBetFilms }) {
   }
 
   const handleSubmit = (evt) => {
+    evt.preventDefault()
     if (!inputValue) {
       setValidationMessage('Нужно ввести ключевое слово')
     }
-    evt.preventDefault()
-    hundleGetMoviesFromBetFilms(isChecked, inputValue)
+
+    searchFilm(isChecked, inputValue)
   }
 
   const handleChange = (evt) => {
@@ -29,6 +30,7 @@ function SearchForm({ hundleGetMoviesFromBetFilms }) {
     }
     setInputValue(evt.target.value)
   }
+
   return (
     <form className="search" required onSubmit={handleSubmit}>
       <span className="search__error">{validationMessage}</span>
