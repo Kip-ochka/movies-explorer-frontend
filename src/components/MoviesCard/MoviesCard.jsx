@@ -1,28 +1,28 @@
 import React from 'react'
 import './MoviesCard.scss'
 
-function MoviesCard({ location }) {
+function MoviesCard({ location, movieData }) {
   const [isLiked, setIsLiked] = React.useState(false)
   const handleLike = () => {
     setIsLiked((v) => !v)
   }
 
   return (
-    <li className='card'>
+    <li className="card">
       <a
-        href='https://www.youtube.com/watch?v=iYMoLgSlSKQ&t=2s'
-        target='_blank'
-        className='card__trailer'
-        rel='noreferrer'
+        href={movieData.trailerLink}
+        target="_blank"
+        className="card__trailer"
+        rel="noreferrer"
       >
         <img
-          src='https://www.soyuz.ru/public/uploads/files/5/7481412/1005x558_20220415183252fecbaf0ea2.jpg'
-          alt='Трейлер фильма'
-          className='card__image'
+          src={movieData.image}
+          alt="Трейлер фильма"
+          className="card__image"
         />
       </a>
-      <div className='card__title-wrapper'>
-        <p className='card__title'>Я рыба я не рыба а рыба фыв фыв </p>
+      <div className="card__title-wrapper">
+        <p className="card__title">{movieData.nameRU}</p>
         {location === '/movies' ? (
           <button
             className={`card__like ${isLiked && 'card__like_type_active'}`}
@@ -32,7 +32,7 @@ function MoviesCard({ location }) {
           <button className={`card__delete`} />
         )}
       </div>
-      <p className='card__duration'>1ч 24м</p>
+      <p className="card__duration">{`${movieData.duration} мин`}</p>
     </li>
   )
 }

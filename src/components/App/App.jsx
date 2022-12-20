@@ -15,7 +15,6 @@ import Preloader from '../Preloader/Preloader'
 import Profile from '../Profile/Profile'
 import Register from '../Register/Register'
 import SavedMovies from '../SavedMovies/SavedMovies'
-import useWindowSize from '../../utils/hooks/useWindowSize'
 import InfoPopup from '../InfoPopup/InfoPopup'
 import './App.scss'
 
@@ -153,19 +152,16 @@ function App() {
     setTimeout(() => setMessage(''), 3000)
   }
   // работа с фильмами
-  const [movies, setMovies] = useState([])
-  const [filteredMovies, setFilteredMovies] = useState([])
   const [isMovieResultError, setIsMovieResultError] = useState(false)
   const [searchError, setSearchError] = useState('')
   const [movieListLoading, setMovieListLoading] = useState(false)
   const [cardsQty, setCardsQty] = useState({})
-  const { width } = useWindowSize()
+  const [moviesToShow, setMoviesToShow] = useState([])
 
   const getMoviesFromBetFilms = async () => {
     setMovieListLoading(true)
     try {
       const movies = await moviesApi.getMovies()
-      setMovies(movies)
       localStorage.setItem('betFilms', JSON.stringify(movies))
       return movies
     } catch (err) {
@@ -178,8 +174,8 @@ function App() {
     }
   }
 
-  const moviesFilter = (movies, isShortFilmsCheck, searchValue) => {
-    return movies.filter((movie) => {
+  const moviesFilter = (moviesList, isShortFilmsCheck, searchValue) => {
+    return moviesList.filter((movie) => {
       const rusName = movie.nameRU.toLowerCase()
       const enName = movie.nameEN.toLowerCase()
       const search = searchValue.toLowerCase()
@@ -189,33 +185,47 @@ function App() {
     })
   }
 
-  const searchFilm = async (isChecked, inputValue) => {
-    localStorage.setItem('isShortFilmChecked', isChecked)
-    localStorage.setItem('searchValue', inputValue)
-    let moviesList = localStorage.getItem('betFilms')
+  const searchFilms = async (isChecked, inputValue) => {
+    let moviesList = JSON.parse(localStorage.getItem('betFilms'))
     if (!moviesList) {
       const movies = await getMoviesFromBetFilms()
-      localStorage.setItem('betFilms', JSON.stringify(movies))
       moviesList = movies
     }
-    const filteredMovies = moviesFilter(movies, isChecked, inputValue)
-    localStorage.setItem('filteredMovies', filteredMovies)
-    setFilteredMovies(filteredMovies)
+    const filteredMoviesByFilter = moviesFilter(
+      moviesList,
+      isChecked,
+      inputValue
+    )
+    return filteredMoviesByFilter
   }
 
   const determineCardsQty = () => {
+    const width = window.innerWidth
     if (width >= 1280) {
-      return setCardsQty({ starCards: 16, aditionalCard: 4 })
+      setCardsQty({ starCards: 16, aditionalCard: 4 })
+      return
     }
-    if (width >= 768) {
-      return setCardsQty({ starCards: 8, aditionalCard: 2 })
+    if (1280 > width >= 768) {
+      setCardsQty({ starCards: 8, aditionalCard: 2 })
+      return
     }
-    return setCardsQty({ starCards: 5, aditionalCard: 2 })
+
+    setCardsQty({ starCards: 5, aditionalCard: 2 })
   }
 
+  const sliceFilms = async (isChecked, inputValue) => {
+    determineCardsQty()
+    const movies = await searchFilms(isChecked, inputValue)
+    const films = movies.slice(0, cardsQty.starCards)
+    console.log(films)
+    setMoviesToShow(films)
+    return films
+  }
   useEffect(() => {
+    setTimeout(() => determineCardsQty(), 1000)
     handleGetProfile()
   }, [])
+
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="page">
@@ -258,7 +268,8 @@ function App() {
                       isMovieResultError={isMovieResultError}
                       searchError={searchError}
                       movieListLoading={movieListLoading}
-                      searchFilm={searchFilm}
+                      sliceFilms={sliceFilms}
+                      moviesToShow={moviesToShow}
                     />
                   </ProtectedRoute>
                 }

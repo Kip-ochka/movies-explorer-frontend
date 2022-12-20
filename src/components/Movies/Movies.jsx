@@ -9,11 +9,12 @@ function Movies({
   isMovieResultError,
   searchError,
   movieListLoading,
-  searchFilm,
+  sliceFilms,
+  moviesToShow,
 }) {
   return (
     <main className="movies">
-      <SearchForm searchFilm={searchFilm} />
+      <SearchForm sliceFilms={sliceFilms} />
       {movieListLoading ? (
         <Preloader />
       ) : (
@@ -22,6 +23,7 @@ function Movies({
             location={location}
             isMovieResultError={isMovieResultError}
             searchError={searchError}
+            moviesToShow={moviesToShow}
           />
         </>
       )}
