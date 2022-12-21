@@ -175,14 +175,22 @@ function App() {
   }
 
   const moviesFilter = (moviesList, isShortFilmsCheck, searchValue) => {
-    return moviesList.filter((movie) => {
+    const filteredValue = moviesList.filter((movie) => {
       const rusName = movie.nameRU.toLowerCase()
       const enName = movie.nameEN.toLowerCase()
       const search = searchValue.toLowerCase()
       const textMatch = rusName.includes(search) || enName.includes(search)
-      const durationMatch = isShortFilmsCheck ? movie.duration <= 40 : true
-      return textMatch && durationMatch
+      return textMatch
     })
+    localStorage.setItem('filteredMoviesByValue', JSON.stringify(filteredValue))
+    if (isShortFilmsCheck) {
+      const filteredByCheck = filteredValue.filter((movie) => {
+        return movie.duration <= 40
+      })
+      return filteredByCheck
+    } else {
+      return filteredValue
+    }
   }
 
   const searchFilms = async (isChecked, inputValue) => {
@@ -196,6 +204,10 @@ function App() {
       isChecked,
       inputValue
     )
+    localStorage.setItem(
+      'fullFilteredMovies',
+      JSON.stringify(filteredMoviesByFilter)
+    )
     return filteredMoviesByFilter
   }
 
@@ -205,7 +217,7 @@ function App() {
       setCardsQty({ starCards: 16, aditionalCard: 4 })
       return
     }
-    if (1280 > width >= 768) {
+    if (1280 > width > 767) {
       setCardsQty({ starCards: 8, aditionalCard: 2 })
       return
     }
@@ -214,13 +226,36 @@ function App() {
   }
 
   const sliceFilms = async (isChecked, inputValue) => {
+    localStorage.setItem('isChecked', isChecked)
+    localStorage.setItem('inputValue', inputValue)
     determineCardsQty()
     const movies = await searchFilms(isChecked, inputValue)
     const films = movies.slice(0, cardsQty.starCards)
-    console.log(films)
     setMoviesToShow(films)
     return films
   }
+
+  const filterCheckbox = (isChecked) => {
+    localStorage.setItem('isChecked', !isChecked)
+    const moviesList = JSON.parse(localStorage.getItem('filteredMoviesByValue'))
+    if (moviesList) {
+      if (!isChecked) {
+        const filtered = moviesList.filter((movie) => {
+          return movie.duration <= 40
+        })
+        setMoviesToShow(filtered)
+      } else {
+        setMoviesToShow(moviesList)
+      }
+    }
+    return
+  }
+  useEffect(() => {
+    const films = JSON.parse(localStorage.getItem('fullFilteredMovies'))
+    if (films) {
+      setMoviesToShow(films)
+    }
+  }, [])
   useEffect(() => {
     setTimeout(() => determineCardsQty(), 1000)
     handleGetProfile()
@@ -270,6 +305,7 @@ function App() {
                       movieListLoading={movieListLoading}
                       sliceFilms={sliceFilms}
                       moviesToShow={moviesToShow}
+                      filterCheckbox={filterCheckbox}
                     />
                   </ProtectedRoute>
                 }
@@ -278,7 +314,10 @@ function App() {
                 path="/saved-movies"
                 element={
                   <ProtectedRoute isLogin={isLogin}>
-                    <SavedMovies location={location} />
+                    <SavedMovies
+                      location={location}
+                      moviesToShow={moviesToShow}
+                    />
                   </ProtectedRoute>
                 }
               />

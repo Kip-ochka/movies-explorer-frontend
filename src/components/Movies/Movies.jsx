@@ -11,10 +11,11 @@ function Movies({
   movieListLoading,
   sliceFilms,
   moviesToShow,
+  filterCheckbox,
 }) {
   return (
     <main className="movies">
-      <SearchForm sliceFilms={sliceFilms} />
+      <SearchForm sliceFilms={sliceFilms} filterCheckbox={filterCheckbox} />
       {movieListLoading ? (
         <Preloader />
       ) : (

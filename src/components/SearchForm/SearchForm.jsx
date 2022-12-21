@@ -2,13 +2,14 @@ import React from 'react'
 import './SearchForm.scss'
 import { ReactComponent as Loop } from '../../images/loopa.svg'
 
-function SearchForm({ sliceFilms }) {
+function SearchForm({ sliceFilms, filterCheckbox }) {
   const [validationMessage, setValidationMessage] = React.useState('')
   const [isChecked, setIsChecked] = React.useState(false)
   const [isDisabled, setIsDisabled] = React.useState(false)
   const [inputValue, setInputValue] = React.useState('')
   const handleCheck = () => {
     setIsChecked((v) => !v)
+    filterCheckbox(isChecked)
     setIsDisabled(true)
     setTimeout(() => {
       setIsDisabled((v) => !v)
@@ -30,6 +31,19 @@ function SearchForm({ sliceFilms }) {
     }
     setInputValue(evt.target.value)
   }
+
+  React.useEffect(() => {
+    const checked = JSON.parse(localStorage.getItem('isChecked'))
+    const inputValue = localStorage.getItem('inputValue')
+
+    if (checked) {
+      setIsChecked(checked)
+    }
+    if (inputValue) {
+      setInputValue(inputValue)
+    }
+    return
+  }, [])
 
   return (
     <form className="search" required onSubmit={handleSubmit}>
