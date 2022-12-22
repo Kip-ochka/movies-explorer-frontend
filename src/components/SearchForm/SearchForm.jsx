@@ -2,7 +2,7 @@ import React from 'react'
 import './SearchForm.scss'
 import { ReactComponent as Loop } from '../../images/loopa.svg'
 
-function SearchForm({ sliceFilms, filterCheckbox }) {
+function SearchForm({ handleSearchSubmit, filterCheckbox }) {
   const [validationMessage, setValidationMessage] = React.useState('')
   const [isChecked, setIsChecked] = React.useState(false)
   const [isDisabled, setIsDisabled] = React.useState(false)
@@ -20,9 +20,9 @@ function SearchForm({ sliceFilms, filterCheckbox }) {
     evt.preventDefault()
     if (!inputValue) {
       setValidationMessage('Нужно ввести ключевое слово')
+      return
     }
-
-    sliceFilms(isChecked, inputValue)
+    handleSearchSubmit(isChecked, inputValue)
   }
 
   const handleChange = (evt) => {

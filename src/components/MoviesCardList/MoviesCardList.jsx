@@ -7,12 +7,15 @@ function MoviesCardList({
   isMovieResultError,
   searchError,
   moviesToShow,
+  loadMore,
+  hasMore,
 }) {
+  console.log(hasMore, isMovieResultError)
   return (
     <section className="card-list">
       <ul className="card-list__inner">
         {isMovieResultError ? (
-          <span>{searchError}</span>
+          <span className="card-list__error">{searchError}</span>
         ) : (
           moviesToShow.map((movie) => {
             return (
@@ -26,7 +29,11 @@ function MoviesCardList({
         )}
       </ul>
       <div className="card-list__button-wrapper">
-        <button className="card-list__more-button">Ещё</button>
+        {hasMore && !isMovieResultError ? (
+          <button className="card-list__more-button" onClick={loadMore}>
+            Ещё
+          </button>
+        ) : null}
       </div>
     </section>
   )

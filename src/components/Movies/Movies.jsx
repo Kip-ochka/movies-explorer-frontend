@@ -9,13 +9,18 @@ function Movies({
   isMovieResultError,
   searchError,
   movieListLoading,
-  sliceFilms,
+  handleSearchSubmit,
   moviesToShow,
   filterCheckbox,
+  loadMore,
+  hasMore,
 }) {
   return (
     <main className="movies">
-      <SearchForm sliceFilms={sliceFilms} filterCheckbox={filterCheckbox} />
+      <SearchForm
+        handleSearchSubmit={handleSearchSubmit}
+        filterCheckbox={filterCheckbox}
+      />
       {movieListLoading ? (
         <Preloader />
       ) : (
@@ -25,6 +30,8 @@ function Movies({
             isMovieResultError={isMovieResultError}
             searchError={searchError}
             moviesToShow={moviesToShow}
+            loadMore={loadMore}
+            hasMore={hasMore}
           />
         </>
       )}

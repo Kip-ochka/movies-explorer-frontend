@@ -99,6 +99,7 @@ function App() {
         setIsLogin(false)
         navigate('/')
         hundleSuccess('Вы успешно вышли, будем ждать Вас вновь')
+        localStorage.clear()
       })
       .catch((err) => {
         handleError(err)
@@ -155,12 +156,13 @@ function App() {
   const [isMovieResultError, setIsMovieResultError] = useState(false)
   const [searchError, setSearchError] = useState('')
   const [movieListLoading, setMovieListLoading] = useState(false)
-  const [cardsQty, setCardsQty] = useState({})
   const [moviesToShow, setMoviesToShow] = useState([])
+  const [moviesToSlice, setMoviesToSlice] = useState([])
 
   const getMoviesFromBetFilms = async () => {
     setMovieListLoading(true)
     try {
+      setIsMovieResultError(false)
       const movies = await moviesApi.getMovies()
       localStorage.setItem('betFilms', JSON.stringify(movies))
       return movies
@@ -175,22 +177,28 @@ function App() {
   }
 
   const moviesFilter = (moviesList, isShortFilmsCheck, searchValue) => {
-    const filteredValue = moviesList.filter((movie) => {
-      const rusName = movie.nameRU.toLowerCase()
-      const enName = movie.nameEN.toLowerCase()
-      const search = searchValue.toLowerCase()
-      const textMatch = rusName.includes(search) || enName.includes(search)
-      return textMatch
-    })
-    localStorage.setItem('filteredMoviesByValue', JSON.stringify(filteredValue))
-    if (isShortFilmsCheck) {
-      const filteredByCheck = filteredValue.filter((movie) => {
-        return movie.duration <= 40
+    if (moviesList) {
+      const filteredValue = moviesList.filter((movie) => {
+        const rusName = movie.nameRU.toLowerCase()
+        const enName = movie.nameEN.toLowerCase()
+        const search = searchValue.toLowerCase()
+        const textMatch = rusName.includes(search) || enName.includes(search)
+        return textMatch
       })
-      return filteredByCheck
-    } else {
-      return filteredValue
+      localStorage.setItem(
+        'filteredMoviesByValue',
+        JSON.stringify(filteredValue)
+      )
+      if (isShortFilmsCheck) {
+        const filteredByCheck = filteredValue.filter((movie) => {
+          return movie.duration <= 40
+        })
+        return filteredByCheck
+      } else {
+        return filteredValue
+      }
     }
+    return []
   }
 
   const searchFilms = async (isChecked, inputValue) => {
@@ -213,26 +221,37 @@ function App() {
 
   const determineCardsQty = () => {
     const width = window.innerWidth
-    if (width >= 1280) {
-      setCardsQty({ starCards: 16, aditionalCard: 4 })
-      return
+    if (width > 1279) {
+      return { startCards: 16, aditionalCard: 4 }
     }
-    if (1280 > width > 767) {
-      setCardsQty({ starCards: 8, aditionalCard: 2 })
-      return
+    if (width > 767) {
+      return { startCards: 8, aditionalCard: 2 }
     }
-
-    setCardsQty({ starCards: 5, aditionalCard: 2 })
+    return { startCards: 5, aditionalCard: 2 }
   }
 
-  const sliceFilms = async (isChecked, inputValue) => {
+  const handleSearchSubmit = async (isChecked, inputValue) => {
+    setIsMovieResultError(false)
     localStorage.setItem('isChecked', isChecked)
     localStorage.setItem('inputValue', inputValue)
-    determineCardsQty()
     const movies = await searchFilms(isChecked, inputValue)
-    const films = movies.slice(0, cardsQty.starCards)
+    setMoviesToSlice(movies)
+    const films = sliceAfterSearch(movies)
+    if (films.length === 0) {
+      setIsMovieResultError(true)
+      setSearchError('Ничего не найдено')
+      return
+    }
     setMoviesToShow(films)
     return films
+  }
+  const sliceAfterSearch = (arr) => {
+    const qty = determineCardsQty()
+    if (arr.length > qty.startCards) {
+      const sliced = arr.slice(0, qty.startCards)
+      return sliced
+    }
+    return arr
   }
 
   const filterCheckbox = (isChecked) => {
@@ -243,24 +262,41 @@ function App() {
         const filtered = moviesList.filter((movie) => {
           return movie.duration <= 40
         })
-        setMoviesToShow(filtered)
+        setMoviesToSlice(filtered)
+        const sliced = sliceAfterSearch(filtered)
+        setMoviesToShow(sliced)
       } else {
-        setMoviesToShow(moviesList)
+        setMoviesToSlice(moviesList)
+        const sliced = sliceAfterSearch(moviesList)
+        setMoviesToShow(sliced)
       }
     }
     return
   }
+
+  const loadMore = () => {
+    const qty = determineCardsQty()
+    const start = moviesToShow.length
+    const aditional = qty.aditionalCard
+    const end = start + aditional
+    const aditionalCards = moviesToSlice.slice(start, end)
+    setMoviesToShow([...moviesToShow, ...aditionalCards])
+  }
+  //получаю фильмы из стора
   useEffect(() => {
+    setIsMovieResultError(false)
     const films = JSON.parse(localStorage.getItem('fullFilteredMovies'))
     if (films) {
-      setMoviesToShow(films)
+      setMoviesToSlice(films)
+      const sliced = sliceAfterSearch(films)
+      setMoviesToShow(sliced)
+      return
     }
   }, [])
+  //получаю данные профиля юзера
   useEffect(() => {
-    setTimeout(() => determineCardsQty(), 1000)
     handleGetProfile()
   }, [])
-
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="page">
@@ -303,9 +339,14 @@ function App() {
                       isMovieResultError={isMovieResultError}
                       searchError={searchError}
                       movieListLoading={movieListLoading}
-                      sliceFilms={sliceFilms}
+                      handleSearchSubmit={handleSearchSubmit}
                       moviesToShow={moviesToShow}
                       filterCheckbox={filterCheckbox}
+                      loadMore={loadMore}
+                      hasMore={
+                        moviesToShow.length !== moviesToSlice.length &&
+                        moviesToShow.length !== 0
+                      }
                     />
                   </ProtectedRoute>
                 }
