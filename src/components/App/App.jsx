@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useLayoutEffect } from 'react'
 import { Route, Routes, useLocation, useNavigate } from 'react-router-dom'
 import { pageWithFooter, pageWithHeader } from '../../utils/variables'
 import { CurrentUserContext } from '../../context/CurrenUser'
@@ -158,7 +158,10 @@ function App() {
   const [movieListLoading, setMovieListLoading] = useState(false)
   const [moviesToShow, setMoviesToShow] = useState([])
   const [moviesToSlice, setMoviesToSlice] = useState([])
-
+  const [savedMovieFiltered, setSavedMovieFiltered] = useState([])
+  const [savedMoviesSliced, setSavedMoviesSliced] = useState([])
+  const [savedMoviesToShow, setSavedMoviesToShow] = useState([])
+  //получение фильмов с бетфилмс
   const getMoviesFromBetFilms = async () => {
     setMovieListLoading(true)
     try {
@@ -175,7 +178,7 @@ function App() {
       setMovieListLoading(false)
     }
   }
-
+  //фильтрация сперва по значению инпута, промежуточное сохранение, фильтрация по чекбоксу
   const moviesFilter = (moviesList, isShortFilmsCheck, searchValue) => {
     if (moviesList) {
       const filteredValue = moviesList.filter((movie) => {
@@ -200,7 +203,7 @@ function App() {
     }
     return []
   }
-
+  // ищем фильмы в локалсторадже или запрашиваем с сервера
   const searchFilms = async (isChecked, inputValue) => {
     let moviesList = JSON.parse(localStorage.getItem('betFilms'))
     if (!moviesList) {
@@ -218,7 +221,7 @@ function App() {
     )
     return filteredMoviesByFilter
   }
-
+  //измеряю экран для количества отображения и дополнительных подзагрузок
   const determineCardsQty = () => {
     const width = window.innerWidth
     if (width > 1279) {
@@ -229,7 +232,7 @@ function App() {
     }
     return { startCards: 5, aditionalCard: 2 }
   }
-
+  // собирает данные поиска и показывает их на страницу
   const handleSearchSubmit = async (isChecked, inputValue) => {
     setIsMovieResultError(false)
     localStorage.setItem('isChecked', isChecked)
@@ -245,6 +248,7 @@ function App() {
     setMoviesToShow(films)
     return films
   }
+  // слайсю отфильтрованный массив для отображения стартового количество карточек
   const sliceAfterSearch = (arr) => {
     const qty = determineCardsQty()
     if (arr.length > qty.startCards) {
@@ -253,7 +257,7 @@ function App() {
     }
     return arr
   }
-
+  // фильтрую массив переключая чекбокс
   const filterCheckbox = (isChecked) => {
     localStorage.setItem('isChecked', !isChecked)
     const moviesList = JSON.parse(localStorage.getItem('filteredMoviesByValue'))
@@ -273,7 +277,7 @@ function App() {
     }
     return
   }
-
+  // догружаю на клик фильмы
   const loadMore = () => {
     const qty = determineCardsQty()
     const start = moviesToShow.length
@@ -282,7 +286,40 @@ function App() {
     const aditionalCards = moviesToSlice.slice(start, end)
     setMoviesToShow([...moviesToShow, ...aditionalCards])
   }
-  //получаю фильмы из стора
+
+  //
+  const getSavedMovies = async () => {
+    const savedMovies = await mainApi.getMyMovies()
+    setSavedMoviesToShow(savedMovies)
+  }
+
+  const addToSaveMovie = async (movieData) => {
+    try {
+      const saved = await mainApi.addNewMovie(movieData)
+      setSavedMoviesToShow((movies) => [...movies, saved])
+      setSavedMovieFiltered((movies) => [...movies, saved])
+      return saved
+    } catch (err) {
+      handleError(err)
+    }
+  }
+
+  const deleteFromSaveMovie = async (movieData) => {
+    try {
+      await mainApi.deleteMovie(movieData)
+      console.log(savedMoviesToShow)
+      setSavedMoviesToShow((movies) =>
+        movies.filter((movie) => movie._id !== movieData)
+      )
+      console.log(savedMoviesToShow)
+      setSavedMovieFiltered((movies) =>
+        movies.filter((movie) => movie._id !== movieData)
+      )
+    } catch (err) {
+      handleError(err)
+    }
+  }
+  //получаю фильмы из локалстора
   useEffect(() => {
     setIsMovieResultError(false)
     const films = JSON.parse(localStorage.getItem('fullFilteredMovies'))
@@ -297,6 +334,11 @@ function App() {
   useEffect(() => {
     handleGetProfile()
   }, [])
+  useEffect(() => {
+    if (isLogin) {
+      getSavedMovies()
+    }
+  }, [isLogin])
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="page">
@@ -347,6 +389,8 @@ function App() {
                         moviesToShow.length !== moviesToSlice.length &&
                         moviesToShow.length !== 0
                       }
+                      addToSaveMovie={addToSaveMovie}
+                      deleteFromSaveMovie={deleteFromSaveMovie}
                     />
                   </ProtectedRoute>
                 }
@@ -357,7 +401,10 @@ function App() {
                   <ProtectedRoute isLogin={isLogin}>
                     <SavedMovies
                       location={location}
-                      moviesToShow={moviesToShow}
+                      isMovieResultError={isMovieResultError}
+                      searchError={searchError}
+                      savedMoviesToShow={savedMoviesToShow}
+                      deleteFromSaveMovie={deleteFromSaveMovie}
                     />
                   </ProtectedRoute>
                 }

@@ -1,10 +1,16 @@
 import React from 'react'
 import './SavedMovies.scss'
-import MoviesCardList from '../MoviesCardList/MoviesCardList'
+import SavedMoviesCardList from '../SavedMoviesCardList/SavedMoviesCardList'
 import SearchForm from '../SearchForm/SearchForm'
 import Preloader from '../Preloader/Preloader'
 
-function SavedMovies({ location, moviesToShow }) {
+function SavedMovies({
+  location,
+  isMovieResultError,
+  searchError,
+  savedMoviesToShow,
+  deleteFromSaveMovie,
+}) {
   const [isLoading, setIsLoading] = React.useState(false)
   return (
     <section className="saved-movies">
@@ -13,7 +19,13 @@ function SavedMovies({ location, moviesToShow }) {
         <Preloader />
       ) : (
         <>
-          <MoviesCardList location={location} moviesToShow={moviesToShow} />
+          <SavedMoviesCardList
+            location={location}
+            isMovieResultError={isMovieResultError}
+            searchError={searchError}
+            savedMoviesToShow={savedMoviesToShow}
+            deleteFromSaveMovie={deleteFromSaveMovie}
+          />
         </>
       )}
     </section>

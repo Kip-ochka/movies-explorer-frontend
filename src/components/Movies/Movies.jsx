@@ -14,6 +14,8 @@ function Movies({
   filterCheckbox,
   loadMore,
   hasMore,
+  addToSaveMovie,
+  deleteFromSaveMovie,
 }) {
   return (
     <main className="movies">
@@ -32,6 +34,8 @@ function Movies({
             moviesToShow={moviesToShow}
             loadMore={loadMore}
             hasMore={hasMore}
+            addToSaveMovie={addToSaveMovie}
+            deleteFromSaveMovie={deleteFromSaveMovie}
           />
         </>
       )}
