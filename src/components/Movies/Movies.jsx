@@ -6,36 +6,33 @@ import MoviesCardList from '../MoviesCardList/MoviesCardList'
 
 function Movies({
   location,
-  isMovieResultError,
-  searchError,
-  movieListLoading,
-  handleSearchSubmit,
-  moviesToShow,
-  filterCheckbox,
+  isError,
+  error,
+  onSubmit,
+  onToggle,
+  movies,
+  deleteHandler,
+  saveHandler,
+  preloading,
   loadMore,
   hasMore,
-  addToSaveMovie,
-  deleteFromSaveMovie,
 }) {
   return (
     <main className="movies">
-      <SearchForm
-        handleSearchSubmit={handleSearchSubmit}
-        filterCheckbox={filterCheckbox}
-      />
-      {movieListLoading ? (
+      <SearchForm onSubmit={onSubmit} onToggle={onToggle} />
+      {preloading ? (
         <Preloader />
       ) : (
         <>
           <MoviesCardList
             location={location}
-            isMovieResultError={isMovieResultError}
-            searchError={searchError}
-            moviesToShow={moviesToShow}
+            isError={isError}
+            error={error}
+            movies={movies}
             loadMore={loadMore}
             hasMore={hasMore}
-            addToSaveMovie={addToSaveMovie}
-            deleteFromSaveMovie={deleteFromSaveMovie}
+            saveHandler={saveHandler}
+            deleteHandler={deleteHandler}
           />
         </>
       )}

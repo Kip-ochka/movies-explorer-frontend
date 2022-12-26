@@ -4,24 +4,24 @@ import './SavedMoviesCardList.scss'
 
 function SavedMoviesCardList({
   location,
-  isMovieResultError,
-  searchError,
-  savedMoviesToShow,
-  deleteFromSaveMovie,
+  isError,
+  error,
+  movies,
+  deleteHandler,
 }) {
   return (
     <section className="card-list">
       <ul className="card-list__inner">
-        {isMovieResultError ? (
-          <span className="card-list__error">{searchError}</span>
+        {isError ? (
+          <span className="card-list__error">{error}</span>
         ) : (
-          savedMoviesToShow.map((movie) => {
+          movies.map((movie) => {
             return (
               <MoviesCard
                 key={movie.movieId}
                 location={location}
                 movieData={movie}
-                deleteFromSaveMovie={deleteFromSaveMovie}
+                deleteHandler={deleteHandler}
               />
             )
           })

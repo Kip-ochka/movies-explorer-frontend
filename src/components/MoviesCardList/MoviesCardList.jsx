@@ -4,35 +4,35 @@ import './MoviesCardList.scss'
 
 function MoviesCardList({
   location,
-  isMovieResultError,
-  searchError,
-  moviesToShow,
+  isError,
+  error,
+  movies,
   loadMore,
   hasMore,
-  addToSaveMovie,
-  deleteFromSaveMovie,
+  saveHandler,
+  deleteHandler,
 }) {
   return (
     <section className="card-list">
       <ul className="card-list__inner">
-        {isMovieResultError ? (
-          <span className="card-list__error">{searchError}</span>
+        {isError ? (
+          <span className="card-list__error">{error}</span>
         ) : (
-          moviesToShow.map((movie) => {
+          movies.map((movie) => {
             return (
               <MoviesCard
                 key={movie.movieId}
                 location={location}
                 movieData={movie}
-                addToSaveMovie={addToSaveMovie}
-                deleteFromSaveMovie={deleteFromSaveMovie}
+                saveHandler={saveHandler}
+                deleteHandler={deleteHandler}
               />
             )
           })
         )}
       </ul>
       <div className="card-list__button-wrapper">
-        {hasMore && !isMovieResultError ? (
+        {hasMore && !isError ? (
           <button className="card-list__more-button" onClick={loadMore}>
             Ещё
           </button>

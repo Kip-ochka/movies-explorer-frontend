@@ -1,12 +1,7 @@
 import React from 'react'
 import './MoviesCard.scss'
 
-function MoviesCard({
-  location,
-  movieData,
-  addToSaveMovie,
-  deleteFromSaveMovie,
-}) {
+function MoviesCard({ location, movieData, saveHandler, deleteHandler }) {
   const [data, setData] = React.useState(movieData)
   const [isLiked, setIsLiked] = React.useState(data?.isLiked)
   const handleLike = async () => {
@@ -25,7 +20,7 @@ function MoviesCard({
         nameRU: data.nameRU,
       }
       try {
-        const movie = await addToSaveMovie(dataToValidation)
+        const movie = await saveHandler(dataToValidation)
         setData(movie)
         setIsLiked(true)
       } catch (err) {
@@ -34,14 +29,14 @@ function MoviesCard({
       return
     }
     if (isLiked === true) {
-      await deleteFromSaveMovie(data._id)
+      await deleteHandler(data._id)
       setData(movieData)
       setIsLiked(false)
       return
     }
   }
   const deleted = () => {
-    deleteFromSaveMovie(movieData._id)
+    deleteHandler(movieData._id)
   }
   return (
     <li className="card">

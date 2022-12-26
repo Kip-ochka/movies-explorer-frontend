@@ -6,25 +6,27 @@ import Preloader from '../Preloader/Preloader'
 
 function SavedMovies({
   location,
-  isMovieResultError,
-  searchError,
-  savedMoviesToShow,
-  deleteFromSaveMovie,
+  isError,
+  error,
+  onSubmit,
+  onToggle,
+  movies,
+  deleteHandler,
 }) {
   const [isLoading, setIsLoading] = React.useState(false)
   return (
     <section className="saved-movies">
-      <SearchForm />
+      <SearchForm onSubmit={onSubmit} onToggle={onToggle} />
       {isLoading ? (
         <Preloader />
       ) : (
         <>
           <SavedMoviesCardList
             location={location}
-            isMovieResultError={isMovieResultError}
-            searchError={searchError}
-            savedMoviesToShow={savedMoviesToShow}
-            deleteFromSaveMovie={deleteFromSaveMovie}
+            isError={isError}
+            error={error}
+            movies={movies}
+            deleteHandler={deleteHandler}
           />
         </>
       )}

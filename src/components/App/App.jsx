@@ -148,7 +148,6 @@ function App() {
     setMoviesToShow({})
     setMoviesToSlice({})
     setSavedMovieFiltered({})
-    setSavedMoviesSliced({})
     setSavedMoviesToShow({})
   }
   const hundleSuccess = (message) => {
@@ -165,7 +164,6 @@ function App() {
   const [moviesToShow, setMoviesToShow] = useState([])
   const [moviesToSlice, setMoviesToSlice] = useState([])
   const [savedMovieFiltered, setSavedMovieFiltered] = useState([])
-  const [savedMoviesSliced, setSavedMoviesSliced] = useState([])
   const [savedMoviesToShow, setSavedMoviesToShow] = useState([])
   //получение фильмов с бетфилмс
   const getMoviesFromBetFilms = async () => {
@@ -239,22 +237,6 @@ function App() {
     }
     return { startCards: 5, aditionalCard: 2 }
   }
-  // собирает данные поиска и показывает их на страницу
-  const handleSearchSubmit = async (isChecked, inputValue) => {
-    setIsMovieResultError(false)
-    localStorage.setItem('isChecked', isChecked)
-    localStorage.setItem('inputValue', inputValue)
-    const movies = await searchFilmsFromBet(isChecked, inputValue)
-    setMoviesToSlice(movies)
-    const films = sliceAfterSearch(movies)
-    if (films.length === 0) {
-      setIsMovieResultError(true)
-      setSearchError('Ничего не найдено')
-      return
-    }
-    setMoviesToShow(films)
-    return films
-  }
   // слайсю отфильтрованный массив для отображения стартового количество карточек
   const sliceAfterSearch = (arr) => {
     const qty = determineCardsQty()
@@ -284,6 +266,62 @@ function App() {
     }
     return
   }
+  // собирает данные поиска и показывает их на страницу фильмы
+  const handleSearchSubmit = async (isChecked, inputValue) => {
+    setIsMovieResultError(false)
+    localStorage.setItem('isChecked', isChecked)
+    localStorage.setItem('inputValue', inputValue)
+    const movies = await searchFilmsFromBet(isChecked, inputValue)
+    setMoviesToSlice(movies)
+    const films = sliceAfterSearch(movies)
+    if (films.length === 0) {
+      setIsMovieResultError(true)
+      setSearchError('Ничего не найдено')
+      return
+    }
+    setMoviesToShow(films)
+    return films
+  }
+
+  const handleSearchSubmitSaved = (isChecked, inputValue) => {
+    setIsMovieResultError(false)
+    const movies = savedMoviesToShow
+    const filteredMovies = movies.filter((movie) => {
+      const rusName = movie.nameRU.toLowerCase()
+      const enName = movie.nameEN.toLowerCase()
+      const search = inputValue.toLowerCase()
+      const textMatch = rusName.includes(search) || enName.includes(search)
+      return textMatch
+    })
+    setSavedMovieFiltered(filteredMovies)
+    if (isChecked) {
+      const checkBox = filteredMovies.filter((movie) => {
+        const checkBox = movie.duration <= 40
+        return checkBox
+      })
+      setMoviesToShow(checkBox)
+      return
+    }
+    if (filteredMovies.length === 0) {
+      setIsMovieResultError(true)
+      setSearchError('Ничего не найдено')
+      return
+    }
+    setSavedMoviesToShow(filteredMovies)
+  }
+
+  const handleToggleDurationCheck = (isCheck) => {
+    if (isCheck) {
+      const checkBox = savedMovieFiltered.filter((movie) => {
+        return movie.duration <= 40
+      })
+      setMoviesToShow(checkBox)
+      return
+    } else {
+      setMoviesToShow(savedMovieFiltered)
+    }
+  }
+  console.log(savedMoviesToShow)
   // догружаю на клик фильмы
   const loadMore = () => {
     const qty = determineCardsQty()
@@ -294,10 +332,13 @@ function App() {
     setMoviesToShow([...moviesToShow, ...aditionalCards])
   }
 
-  //
   const getSavedMovies = async () => {
-    const savedMovies = await mainApi.getMyMovies()
-    setSavedMoviesToShow(savedMovies)
+    try {
+      const savedMovies = await mainApi.getMyMovies()
+      setSavedMoviesToShow(savedMovies)
+    } catch (err) {
+      handleError(err)
+    }
   }
 
   const addToSaveMovie = async (movieData) => {
@@ -398,19 +439,19 @@ function App() {
                   <ProtectedRoute isLogin={isLogin}>
                     <Movies
                       location={location}
-                      isMovieResultError={isMovieResultError}
-                      searchError={searchError}
-                      movieListLoading={movieListLoading}
-                      handleSearchSubmit={handleSearchSubmit}
-                      moviesToShow={isLikedMovie(moviesToShow)}
-                      filterCheckbox={filterCheckbox}
+                      isError={isMovieResultError}
+                      error={searchError}
+                      onSubmit={handleSearchSubmit}
+                      onToggle={filterCheckbox}
+                      movies={isLikedMovie(moviesToShow)}
+                      deleteHandler={deleteFromSaveMovie}
+                      saveHandler={addToSaveMovie}
+                      preloading={movieListLoading}
                       loadMore={loadMore}
                       hasMore={
                         moviesToShow.length !== moviesToSlice.length &&
                         moviesToShow.length !== 0
                       }
-                      addToSaveMovie={addToSaveMovie}
-                      deleteFromSaveMovie={deleteFromSaveMovie}
                     />
                   </ProtectedRoute>
                 }
@@ -421,10 +462,12 @@ function App() {
                   <ProtectedRoute isLogin={isLogin}>
                     <SavedMovies
                       location={location}
-                      isMovieResultError={isMovieResultError}
-                      searchError={searchError}
-                      savedMoviesToShow={savedMoviesToShow}
-                      deleteFromSaveMovie={deleteFromSaveMovie}
+                      isError={isMovieResultError}
+                      error={searchError}
+                      onSubmit={handleSearchSubmitSaved}
+                      onToggle={handleToggleDurationCheck}
+                      movies={savedMoviesToShow}
+                      deleteHandler={deleteFromSaveMovie}
                     />
                   </ProtectedRoute>
                 }

@@ -2,14 +2,14 @@ import React from 'react'
 import './SearchForm.scss'
 import { ReactComponent as Loop } from '../../images/loopa.svg'
 
-function SearchForm({ handleSearchSubmit, filterCheckbox }) {
+function SearchForm({ onSubmit, onToggle }) {
   const [validationMessage, setValidationMessage] = React.useState('')
   const [isChecked, setIsChecked] = React.useState(false)
   const [isDisabled, setIsDisabled] = React.useState(false)
   const [inputValue, setInputValue] = React.useState('')
   const handleCheck = () => {
     setIsChecked((v) => !v)
-    filterCheckbox(isChecked)
+    onToggle(isChecked)
     setIsDisabled(true)
     setTimeout(() => {
       setIsDisabled((v) => !v)
@@ -22,7 +22,7 @@ function SearchForm({ handleSearchSubmit, filterCheckbox }) {
       setValidationMessage('Нужно ввести ключевое слово')
       return
     }
-    handleSearchSubmit(isChecked, inputValue)
+    onSubmit(isChecked, inputValue)
   }
 
   const handleChange = (evt) => {
