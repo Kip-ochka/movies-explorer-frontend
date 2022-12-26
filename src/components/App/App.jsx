@@ -95,11 +95,9 @@ function App() {
     mainApi
       .logout()
       .then((res) => {
-        setCurrentUser(null)
-        setIsLogin(false)
+        unsetAll()
         navigate('/')
         hundleSuccess('Вы успешно вышли, будем ждать Вас вновь')
-        localStorage.clear()
       })
       .catch((err) => {
         handleError(err)
@@ -130,12 +128,10 @@ function App() {
   }
 
   const handleError = (err) => {
-    if (err.status === 401) {
-      setIsLogin(false)
-      setCurrentUser(null)
-      navigate('/')
-    }
     err.then((err) => {
+      if (err.statusCode === 401) {
+        unsetAll()
+      }
       setIsError(true)
       setIsOpenPopup(true)
       setMessage(err.message)
@@ -144,7 +140,17 @@ function App() {
       setTimeout(() => setIsError(false), 3000)
     })
   }
-
+  const unsetAll = () => {
+    navigate('/')
+    localStorage.clear()
+    setIsLogin(false)
+    setCurrentUser(null)
+    setMoviesToShow({})
+    setMoviesToSlice({})
+    setSavedMovieFiltered({})
+    setSavedMoviesSliced({})
+    setSavedMoviesToShow({})
+  }
   const hundleSuccess = (message) => {
     setIsError(false)
     setMessage(message)
@@ -170,6 +176,7 @@ function App() {
       localStorage.setItem('betFilms', JSON.stringify(movies))
       return movies
     } catch (err) {
+      handleError(err)
       setIsMovieResultError(true)
       setSearchError(
         'Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз'
@@ -204,7 +211,7 @@ function App() {
     return []
   }
   // ищем фильмы в локалсторадже или запрашиваем с сервера
-  const searchFilms = async (isChecked, inputValue) => {
+  const searchFilmsFromBet = async (isChecked, inputValue) => {
     let moviesList = JSON.parse(localStorage.getItem('betFilms'))
     if (!moviesList) {
       const movies = await getMoviesFromBetFilms()
@@ -237,7 +244,7 @@ function App() {
     setIsMovieResultError(false)
     localStorage.setItem('isChecked', isChecked)
     localStorage.setItem('inputValue', inputValue)
-    const movies = await searchFilms(isChecked, inputValue)
+    const movies = await searchFilmsFromBet(isChecked, inputValue)
     setMoviesToSlice(movies)
     const films = sliceAfterSearch(movies)
     if (films.length === 0) {
@@ -307,11 +314,9 @@ function App() {
   const deleteFromSaveMovie = async (movieData) => {
     try {
       await mainApi.deleteMovie(movieData)
-      console.log(savedMoviesToShow)
       setSavedMoviesToShow((movies) =>
         movies.filter((movie) => movie._id !== movieData)
       )
-      console.log(savedMoviesToShow)
       setSavedMovieFiltered((movies) =>
         movies.filter((movie) => movie._id !== movieData)
       )
@@ -319,6 +324,21 @@ function App() {
       handleError(err)
     }
   }
+
+  const isLikedMovie = (movies) => {
+    return movies.map((movie) => {
+      const liked = savedMoviesToShow.find((saved) => {
+        return saved.movieId === movie.movieId
+      })
+      return liked ? { ...liked, isLiked: true } : { ...movie, isLiked: false }
+    })
+  }
+
+  useEffect(() => {
+    if (savedMoviesToShow.length > 0) {
+      isLikedMovie(moviesToShow)
+    }
+  }, [savedMoviesToShow.length])
   //получаю фильмы из локалстора
   useEffect(() => {
     setIsMovieResultError(false)
@@ -382,7 +402,7 @@ function App() {
                       searchError={searchError}
                       movieListLoading={movieListLoading}
                       handleSearchSubmit={handleSearchSubmit}
-                      moviesToShow={moviesToShow}
+                      moviesToShow={isLikedMovie(moviesToShow)}
                       filterCheckbox={filterCheckbox}
                       loadMore={loadMore}
                       hasMore={
