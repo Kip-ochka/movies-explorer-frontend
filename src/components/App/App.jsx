@@ -163,6 +163,7 @@ function App() {
   const [movieListLoading, setMovieListLoading] = useState(false)
   const [moviesToShow, setMoviesToShow] = useState([])
   const [moviesToSlice, setMoviesToSlice] = useState([])
+  const [savedMoviesFromGet, setSavedMoviesFromGet] = useState([])
   const [savedMovieFiltered, setSavedMovieFiltered] = useState([])
   const [savedMoviesToShow, setSavedMoviesToShow] = useState([])
   //получение фильмов с бетфилмс
@@ -183,31 +184,83 @@ function App() {
       setMovieListLoading(false)
     }
   }
-  //фильтрация сперва по значению инпута, промежуточное сохранение, фильтрация по чекбоксу
+  // получение фильмов с нашего апи
+  const getSavedMovies = async () => {
+    try {
+      const savedMovies = await mainApi.getMyMovies()
+      const changed = savedMovies.map((movie) => {
+        return { ...movie, isLiked: true }
+      })
+      setSavedMoviesFromGet(changed)
+      setSavedMoviesToShow(changed)
+    } catch (err) {
+      handleError(err)
+    }
+  }
+  //общая функция фильтра по инпуту
+  const filterByValue = (arr, inputValue) => {
+    return arr.filter((movie) => {
+      const rusName = movie.nameRU.toLowerCase()
+      const enName = movie.nameEN.toLowerCase()
+      const search = inputValue.toLowerCase()
+      const textMatch = rusName.includes(search) || enName.includes(search)
+      return textMatch
+    })
+  }
+  //общая функция фильра по чекбоксу
+  const filterByDuration = (arr, isChecked) => {
+    if (isChecked) {
+      const checkbox = arr.filter((item) => {
+        return item.duration <= 40
+      })
+      return checkbox
+    } else {
+      return arr
+    }
+  }
+  //фильтрация сперва по значению инпута, промежуточное сохранение, фильтрация по чекбоксу - для страницы фильмы
   const moviesFilter = (moviesList, isShortFilmsCheck, searchValue) => {
     if (moviesList) {
-      const filteredValue = moviesList.filter((movie) => {
-        const rusName = movie.nameRU.toLowerCase()
-        const enName = movie.nameEN.toLowerCase()
-        const search = searchValue.toLowerCase()
-        const textMatch = rusName.includes(search) || enName.includes(search)
-        return textMatch
-      })
+      const filteredValue = filterByValue(moviesList, searchValue)
       localStorage.setItem(
         'filteredMoviesByValue',
         JSON.stringify(filteredValue)
       )
-      if (isShortFilmsCheck) {
-        const filteredByCheck = filteredValue.filter((movie) => {
-          return movie.duration <= 40
-        })
-        return filteredByCheck
-      } else {
-        return filteredValue
-      }
+      const filteredByCheck = filterByDuration(filteredValue, isShortFilmsCheck)
+      return filteredByCheck
     }
     return []
   }
+  const handleSearchSubmitSaved = (isChecked, inputValue) => {
+    setIsMovieResultError(false)
+    const movies = savedMoviesFromGet
+    const filteredMovies = filterByValue(movies, inputValue)
+    setSavedMovieFiltered(filteredMovies)
+    const filteredByCheck = filterByDuration(filteredMovies, isChecked)
+    setSavedMoviesToShow(filteredByCheck)
+    if (savedMoviesToShow.length === 0) {
+      setIsMovieResultError(true)
+      setSearchError('Ничего не найдено')
+      return
+    }
+  }
+  // фильтрую массив переключая чекбокс
+  const filterCheckbox = (isChecked) => {
+    localStorage.setItem('isChecked', !isChecked)
+    const moviesList = JSON.parse(localStorage.getItem('filteredMoviesByValue'))
+    if (moviesList) {
+      const filteredByCheck = filterByDuration(moviesList, !isChecked)
+      setMoviesToSlice(filteredByCheck)
+      const sliced = sliceAfterSearch(filteredByCheck)
+      setMoviesToShow(sliced)
+    }
+    return
+  }
+  const handleToggleDurationCheck = (isCheck) => {
+    const filteredByCheck = filterByDuration(savedMovieFiltered, !isCheck)
+    setSavedMoviesToShow(filteredByCheck)
+  }
+
   // ищем фильмы в локалсторадже или запрашиваем с сервера
   const searchFilmsFromBet = async (isChecked, inputValue) => {
     let moviesList = JSON.parse(localStorage.getItem('betFilms'))
@@ -246,26 +299,7 @@ function App() {
     }
     return arr
   }
-  // фильтрую массив переключая чекбокс
-  const filterCheckbox = (isChecked) => {
-    localStorage.setItem('isChecked', !isChecked)
-    const moviesList = JSON.parse(localStorage.getItem('filteredMoviesByValue'))
-    if (moviesList) {
-      if (!isChecked) {
-        const filtered = moviesList.filter((movie) => {
-          return movie.duration <= 40
-        })
-        setMoviesToSlice(filtered)
-        const sliced = sliceAfterSearch(filtered)
-        setMoviesToShow(sliced)
-      } else {
-        setMoviesToSlice(moviesList)
-        const sliced = sliceAfterSearch(moviesList)
-        setMoviesToShow(sliced)
-      }
-    }
-    return
-  }
+
   // собирает данные поиска и показывает их на страницу фильмы
   const handleSearchSubmit = async (isChecked, inputValue) => {
     setIsMovieResultError(false)
@@ -283,45 +317,6 @@ function App() {
     return films
   }
 
-  const handleSearchSubmitSaved = (isChecked, inputValue) => {
-    setIsMovieResultError(false)
-    const movies = savedMoviesToShow
-    const filteredMovies = movies.filter((movie) => {
-      const rusName = movie.nameRU.toLowerCase()
-      const enName = movie.nameEN.toLowerCase()
-      const search = inputValue.toLowerCase()
-      const textMatch = rusName.includes(search) || enName.includes(search)
-      return textMatch
-    })
-    setSavedMovieFiltered(filteredMovies)
-    if (isChecked) {
-      const checkBox = filteredMovies.filter((movie) => {
-        const checkBox = movie.duration <= 40
-        return checkBox
-      })
-      setMoviesToShow(checkBox)
-      return
-    }
-    if (filteredMovies.length === 0) {
-      setIsMovieResultError(true)
-      setSearchError('Ничего не найдено')
-      return
-    }
-    setSavedMoviesToShow(filteredMovies)
-  }
-
-  const handleToggleDurationCheck = (isCheck) => {
-    if (isCheck) {
-      const checkBox = savedMovieFiltered.filter((movie) => {
-        return movie.duration <= 40
-      })
-      setMoviesToShow(checkBox)
-      return
-    } else {
-      setMoviesToShow(savedMovieFiltered)
-    }
-  }
-  console.log(savedMoviesToShow)
   // догружаю на клик фильмы
   const loadMore = () => {
     const qty = determineCardsQty()
@@ -332,18 +327,10 @@ function App() {
     setMoviesToShow([...moviesToShow, ...aditionalCards])
   }
 
-  const getSavedMovies = async () => {
-    try {
-      const savedMovies = await mainApi.getMyMovies()
-      setSavedMoviesToShow(savedMovies)
-    } catch (err) {
-      handleError(err)
-    }
-  }
-
   const addToSaveMovie = async (movieData) => {
     try {
       const saved = await mainApi.addNewMovie(movieData)
+      setSavedMoviesFromGet((movies) => [...movies, saved])
       setSavedMoviesToShow((movies) => [...movies, saved])
       setSavedMovieFiltered((movies) => [...movies, saved])
       return saved
@@ -361,13 +348,16 @@ function App() {
       setSavedMovieFiltered((movies) =>
         movies.filter((movie) => movie._id !== movieData)
       )
+      setSavedMoviesFromGet((movies) =>
+        movies.filter((movie) => movie._id !== movieData)
+      )
     } catch (err) {
       handleError(err)
     }
   }
 
   const isLikedMovie = (movies) => {
-    return movies.map((movie) => {
+    return movies?.map((movie) => {
       const liked = savedMoviesToShow.find((saved) => {
         return saved.movieId === movie.movieId
       })
