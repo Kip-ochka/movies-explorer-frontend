@@ -145,10 +145,11 @@ function App() {
     localStorage.clear()
     setIsLogin(false)
     setCurrentUser(null)
-    setMoviesToShow({})
-    setMoviesToSlice({})
-    setSavedMovieFiltered({})
-    setSavedMoviesToShow({})
+    setMoviesToShow([])
+    setMoviesToSlice([])
+    setSavedMovieFiltered([])
+    setSavedMoviesToShow([])
+    savedMoviesFromGet([])
   }
   const hundleSuccess = (message) => {
     setIsError(false)
