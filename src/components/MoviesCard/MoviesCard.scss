@@ -3,11 +3,6 @@
 .card {
   width: 270px;
   height: 230px;
-  &:hover {
-    .card__delete {
-      display: block;
-    }
-  }
   &__trailer {
     display: flex;
     padding: 0;
@@ -67,7 +62,7 @@
     background-repeat: no-repeat;
     background-position: center;
     cursor: pointer;
-    display: none;
+    display: block;
     &:hover {
       opacity: 0.8;
     }
