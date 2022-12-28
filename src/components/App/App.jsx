@@ -396,9 +396,6 @@ function App() {
     }
   }, [isLogin])
 
-  useEffect(() => {
-    console.log(savedMoviesFromGet)
-  }, [savedMoviesFromGet])
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="page">
