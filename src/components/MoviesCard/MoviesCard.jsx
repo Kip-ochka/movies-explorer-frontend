@@ -42,7 +42,7 @@ function MoviesCard({ location, movieData, saveHandler, deleteHandler }) {
   const duration = () => {
     const minutes = data.duration % 60
     const hours = (data.duration - minutes) / 60
-    return hours ? `${hours}ч ${minutes}мин}` : `${minutes}мин`
+    return hours ? `${hours}ч ${minutes}мин` : `${minutes}мин`
   }
   return (
     <li className="card">
