@@ -7,3 +7,5 @@ https://github.com/Kip-ochka/movies-explorer-frontend/pull/2 - ссылка на
 https://github.com/Kip-ochka/movies-explorer-frontend - ссылка на фронтендчасть
 
 https://github.com/Kip-ochka/movies-explorer-api - ссылка на бекенд
+
+https://kipo.movie-explorer.nomoredomains.club/ - ссылка на выложенный фронт
