@@ -42,7 +42,7 @@ function MoviesCard({ location, movieData, saveHandler, deleteHandler }) {
   const duration = () => {
     const minutes = data.duration % 60
     const hours = (data.duration - minutes) / 60
-    return hours ? `${hours}ч ${minutes}мин` : `${minutes}мин`
+    return hours ? `${hours} ч ${minutes} мин` : `${minutes} мин`
   }
   return (
     <li className="card">
@@ -65,7 +65,7 @@ function MoviesCard({ location, movieData, saveHandler, deleteHandler }) {
           <button className={`card__delete`} onClick={deleted} />
         )}
       </div>
-      <p className="card__duration">{duration}</p>
+      <p className="card__duration">{duration()}</p>
     </li>
   )
 }
