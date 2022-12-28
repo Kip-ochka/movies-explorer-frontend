@@ -239,8 +239,7 @@ function App() {
   }
   const handleSearchSubmitSaved = (isChecked, inputValue) => {
     setIsMovieResultError(false)
-    const movies = savedMoviesFromGet
-    const filteredMovies = filterByValue(movies, inputValue)
+    const filteredMovies = filterByValue(savedMoviesFromGet, inputValue)
     setSavedMovieFiltered(filteredMovies)
     const filteredByCheck = filterByDuration(filteredMovies, isChecked)
     setSavedMoviesToShow(filteredByCheck)
@@ -364,7 +363,7 @@ function App() {
 
   const isLikedMovie = (movies) => {
     return movies?.map((movie) => {
-      const liked = savedMoviesToShow.find((saved) => {
+      const liked = savedMoviesFromGet.find((saved) => {
         return saved.movieId === movie.movieId
       })
       return liked ? { ...liked, isLiked: true } : { ...movie, isLiked: false }
@@ -372,7 +371,7 @@ function App() {
   }
 
   useEffect(() => {
-    if (savedMoviesToShow.length > 0) {
+    if (savedMoviesFromGet.length > 0) {
       isLikedMovie(moviesToShow)
     }
   }, [savedMoviesToShow.length])
@@ -396,6 +395,10 @@ function App() {
       getSavedMovies()
     }
   }, [isLogin])
+
+  useEffect(() => {
+    console.log(savedMoviesFromGet)
+  }, [savedMoviesFromGet])
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="page">
