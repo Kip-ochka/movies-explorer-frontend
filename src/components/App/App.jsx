@@ -77,10 +77,14 @@ function App() {
     mainApi
       .signUp(data)
       .then((res) => {
-        setCurrentUser(res)
-        setIsLogin(true)
-        navigate('/movies')
-        hundleSuccess('Вы успешно были зарегистрированы и авторизованы')
+        mainApi
+          .signIn({ email: res.email, password: data.password })
+          .then((res) => {
+            setCurrentUser(res)
+            setIsLogin(true)
+            navigate('/movies')
+            hundleSuccess('Вы успешно были зарегистрированы и авторизованы')
+          })
       })
       .catch((err) => {
         handleError(err)
@@ -94,12 +98,13 @@ function App() {
     setIsLoading(true)
     mainApi
       .logout()
-      .then((res) => {
+      .then(() => {
         unsetAll()
         navigate('/')
         hundleSuccess('Вы успешно вышли, будем ждать Вас вновь')
       })
       .catch((err) => {
+        console.log(err)
         handleError(err)
       })
       .finally(() => {
@@ -149,7 +154,7 @@ function App() {
     setMoviesToSlice([])
     setSavedMovieFiltered([])
     setSavedMoviesToShow([])
-    savedMoviesFromGet([])
+    setSavedMoviesFromGet([])
   }
   const hundleSuccess = (message) => {
     setIsError(false)
