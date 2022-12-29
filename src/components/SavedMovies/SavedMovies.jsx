@@ -13,6 +13,7 @@ function SavedMovies({
   movies,
   deleteHandler,
   initialMovies,
+  isErrorSetter,
 }) {
   const [isLoading, setIsLoading] = React.useState(false)
   const [validationMessage, setValidationMessage] = React.useState('')
@@ -46,15 +47,17 @@ function SavedMovies({
     }
     setInputValues(evt.target.value)
   }
-  console.log(movies)
   React.useEffect(() => {
+    setMoviesToShow(movies)
+  }, [movies])
+
+  React.useEffect(() => {
+    isErrorSetter(false)
     setMoviesToShow(initialMovies)
     setIsChecked(false)
     onToggle(isChecked)
   }, [])
-  React.useEffect(() => {
-    setMoviesToShow(movies)
-  }, [movies])
+
   return (
     <section className="saved-movies">
       <SearchForm

@@ -43,6 +43,7 @@ function App() {
         err.then((err) => {
           setIsError(true)
           console.log(err.message)
+          handleError(err)
         })
       })
       .finally(() => {
@@ -132,30 +133,6 @@ function App() {
       })
   }
 
-  const handleError = (err) => {
-    err.then((err) => {
-      if (err.statusCode === 401) {
-        unsetAll()
-      }
-      setIsError(true)
-      setIsOpenPopup(true)
-      setMessage(err.message)
-      setTimeout(() => setIsOpenPopup(false), 2000)
-      setTimeout(() => setMessage(''), 3000)
-      setTimeout(() => setIsError(false), 3000)
-    })
-  }
-  const unsetAll = () => {
-    navigate('/')
-    localStorage.clear()
-    setIsLogin(false)
-    setCurrentUser(null)
-    setMoviesToShow([])
-    setMoviesToSlice([])
-    setSavedMovieFiltered([])
-    setSavedMoviesToShow([])
-    setSavedMoviesFromGet([])
-  }
   const hundleSuccess = (message) => {
     setIsError(false)
     setMessage(message)
@@ -166,6 +143,8 @@ function App() {
   // работа с фильмами
   const [isMovieResultError, setIsMovieResultError] = useState(false)
   const [searchError, setSearchError] = useState('')
+  const [isSavedResultError, setIsSavedResultError] = useState(false)
+  const [savedError, setSavedError] = useState('')
   const [movieListLoading, setMovieListLoading] = useState(false)
   const [moviesToShow, setMoviesToShow] = useState([])
   const [moviesToSlice, setMoviesToSlice] = useState([])
@@ -237,15 +216,16 @@ function App() {
     }
     return []
   }
+
   const handleSearchSubmitSaved = (isChecked, inputValue) => {
-    setIsMovieResultError(false)
+    setIsSavedResultError(false)
     const filteredMovies = filterByValue(savedMoviesFromGet, inputValue)
     setSavedMovieFiltered(filteredMovies)
     const filteredByCheck = filterByDuration(filteredMovies, isChecked)
     setSavedMoviesToShow(filteredByCheck)
-    if (savedMoviesToShow.length === 0) {
-      setIsMovieResultError(true)
-      setSearchError('Ничего не найдено')
+    if (filteredByCheck.length === 0) {
+      setIsSavedResultError(true)
+      setSavedError('Ничего не найдено')
       return
     }
   }
@@ -261,15 +241,18 @@ function App() {
     }
     return
   }
+
   const handleToggleDurationCheck = (isChecked) => {
     if (savedMovieFiltered.length === 0) {
       const filteredByCheck = filterByDuration(savedMoviesFromGet, isChecked)
+      console.log(filteredByCheck)
       setSavedMoviesToShow(filteredByCheck)
       return
     }
     const filteredByCheck = filterByDuration(savedMovieFiltered, isChecked)
     setSavedMoviesToShow(filteredByCheck)
   }
+
   // ищем фильмы в локалсторадже или запрашиваем с сервера
   const searchFilmsFromBet = async (isChecked, inputValue) => {
     let moviesList = JSON.parse(localStorage.getItem('betFilms'))
@@ -374,6 +357,37 @@ function App() {
     })
   }
 
+  const unsetAll = () => {
+    navigate('/')
+    localStorage.clear()
+    setIsLogin(false)
+    setCurrentUser(null)
+    setMoviesToShow([])
+    setSavedMoviesToShow([])
+    setMoviesToSlice([])
+    setSavedMovieFiltered([])
+    setSavedMoviesFromGet([])
+    setIsMovieResultError(false)
+    setSearchError('')
+    setIsSavedResultError(false)
+    setMovieListLoading(false)
+    setIsLoading(false)
+    setIsError(false)
+    setMessage('')
+    setIsOpenPopup(false)
+  }
+
+  const handleError = (err) => {
+    if (err.statusCode === 401) {
+      unsetAll()
+    }
+    setIsError(true)
+    setIsOpenPopup(true)
+    setMessage(err.message)
+    setTimeout(() => setIsOpenPopup(false), 2000)
+    setTimeout(() => setMessage(''), 3000)
+    setTimeout(() => setIsError(false), 3000)
+  }
   useEffect(() => {
     if (savedMoviesFromGet.length > 0) {
       isLikedMovie(moviesToShow)
@@ -394,12 +408,17 @@ function App() {
   useEffect(() => {
     handleGetProfile()
   }, [])
+
   useEffect(() => {
     if (isLogin) {
+      setIsSavedResultError(false)
       getSavedMovies()
     }
   }, [isLogin])
 
+  useEffect(() => {
+    setSavedMovieFiltered(savedMoviesFromGet)
+  }, [savedMoviesToShow])
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="page">
@@ -409,6 +428,7 @@ function App() {
           <>
             {isPageWithHeader ? <Header isLogin={isLogin} /> : null}
             <Routes>
+              <Route path="/" element={<Main />} />
               <Route
                 path="/signup"
                 element={
@@ -419,7 +439,6 @@ function App() {
                 path="/signin"
                 element={<Login message={message} handleLogin={handleLogin} />}
               />
-              <Route path="/" element={<Main />} />
               <Route
                 path="/profile"
                 element={
@@ -462,13 +481,14 @@ function App() {
                   <ProtectedRoute isLogin={isLogin}>
                     <SavedMovies
                       location={location}
-                      isError={isMovieResultError}
-                      error={searchError}
+                      isError={isSavedResultError}
+                      error={savedError}
                       onSubmit={handleSearchSubmitSaved}
                       onToggle={handleToggleDurationCheck}
                       movies={savedMoviesToShow}
                       deleteHandler={deleteFromSaveMovie}
                       initialMovies={savedMoviesFromGet}
+                      isErrorSetter={setIsSavedResultError}
                     />
                   </ProtectedRoute>
                 }
