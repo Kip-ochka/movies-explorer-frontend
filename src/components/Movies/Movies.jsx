@@ -17,9 +17,49 @@ function Movies({
   loadMore,
   hasMore,
 }) {
+  const [validationMessage, setValidationMessage] = React.useState('')
+  const [isChecked, setIsChecked] = React.useState(
+    JSON.parse(localStorage.getItem('isChecked') || false)
+  )
+  const [isDisabled, setIsDisabled] = React.useState(false)
+  const [inputValues, setInputValues] = React.useState(
+    localStorage.getItem('inputValue') || ''
+  )
+  const handleCheck = () => {
+    setIsChecked((v) => !v)
+    onToggle(isChecked)
+    setIsDisabled(true)
+    setTimeout(() => {
+      setIsDisabled((v) => !v)
+    }, 500)
+  }
+
+  const handleSubmit = (evt) => {
+    evt.preventDefault()
+    if (!inputValues) {
+      setValidationMessage('Нужно ввести ключевое слово')
+      return
+    }
+    onSubmit(isChecked, inputValues)
+  }
+
+  const handleChange = (evt) => {
+    if (!inputValues) {
+      setValidationMessage('')
+    }
+    setInputValues(evt.target.value)
+  }
   return (
     <main className="movies">
-      <SearchForm onSubmit={onSubmit} onToggle={onToggle} />
+      <SearchForm
+        validationMessage={validationMessage}
+        inputValues={inputValues}
+        isChecked={isChecked}
+        isDisabled={isDisabled}
+        handleCheck={handleCheck}
+        handleSubmit={handleSubmit}
+        handleChange={handleChange}
+      />
       {preloading ? (
         <Preloader />
       ) : (

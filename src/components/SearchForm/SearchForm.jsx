@@ -2,49 +2,15 @@ import React from 'react'
 import './SearchForm.scss'
 import { ReactComponent as Loop } from '../../images/loopa.svg'
 
-function SearchForm({ onSubmit, onToggle }) {
-  const [validationMessage, setValidationMessage] = React.useState('')
-  const [isChecked, setIsChecked] = React.useState(false)
-  const [isDisabled, setIsDisabled] = React.useState(false)
-  const [inputValue, setInputValue] = React.useState('')
-  const handleCheck = () => {
-    setIsChecked((v) => !v)
-    onToggle(isChecked)
-    setIsDisabled(true)
-    setTimeout(() => {
-      setIsDisabled((v) => !v)
-    }, 500)
-  }
-
-  const handleSubmit = (evt) => {
-    evt.preventDefault()
-    if (!inputValue) {
-      setValidationMessage('Нужно ввести ключевое слово')
-      return
-    }
-    onSubmit(isChecked, inputValue)
-  }
-
-  const handleChange = (evt) => {
-    if (!inputValue) {
-      setValidationMessage('')
-    }
-    setInputValue(evt.target.value)
-  }
-
-  React.useEffect(() => {
-    const checked = JSON.parse(localStorage.getItem('isChecked'))
-    const inputValue = localStorage.getItem('inputValue')
-
-    if (checked) {
-      setIsChecked(checked)
-    }
-    if (inputValue) {
-      setInputValue(inputValue)
-    }
-    return
-  }, [])
-
+function SearchForm({
+  validationMessage,
+  inputValues,
+  isChecked,
+  isDisabled,
+  handleCheck,
+  handleSubmit,
+  handleChange,
+}) {
   return (
     <form className="search" required onSubmit={handleSubmit}>
       <span className="search__error">{validationMessage}</span>
@@ -56,7 +22,7 @@ function SearchForm({ onSubmit, onToggle }) {
               type="text"
               className="search__input"
               placeholder="Фильм"
-              value={inputValue}
+              value={inputValues}
               onChange={handleChange}
             />
             <button className="search__submit" type="submit" />

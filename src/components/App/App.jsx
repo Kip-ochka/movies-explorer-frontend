@@ -1,4 +1,4 @@
-import { useState, useEffect, useLayoutEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { Route, Routes, useLocation, useNavigate } from 'react-router-dom'
 import { pageWithFooter, pageWithHeader } from '../../utils/variables'
 import { CurrentUserContext } from '../../context/CurrenUser'
@@ -261,11 +261,15 @@ function App() {
     }
     return
   }
-  const handleToggleDurationCheck = (isCheck) => {
-    const filteredByCheck = filterByDuration(savedMovieFiltered, !isCheck)
+  const handleToggleDurationCheck = (isChecked) => {
+    if (savedMovieFiltered.length === 0) {
+      const filteredByCheck = filterByDuration(savedMoviesFromGet, isChecked)
+      setSavedMoviesToShow(filteredByCheck)
+      return
+    }
+    const filteredByCheck = filterByDuration(savedMovieFiltered, isChecked)
     setSavedMoviesToShow(filteredByCheck)
   }
-
   // ищем фильмы в локалсторадже или запрашиваем с сервера
   const searchFilmsFromBet = async (isChecked, inputValue) => {
     let moviesList = JSON.parse(localStorage.getItem('betFilms'))
@@ -464,6 +468,7 @@ function App() {
                       onToggle={handleToggleDurationCheck}
                       movies={savedMoviesToShow}
                       deleteHandler={deleteFromSaveMovie}
+                      initialMovies={savedMoviesFromGet}
                     />
                   </ProtectedRoute>
                 }
