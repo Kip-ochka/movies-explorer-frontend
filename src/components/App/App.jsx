@@ -22,7 +22,7 @@ function App() {
   const location = useLocation().pathname
   const navigate = useNavigate()
   const [isLogin, setIsLogin] = useState(false)
-  const [isLoading, setIsLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
   const [currentUser, setCurrentUser] = useState(null)
   const [isError, setIsError] = useState(false)
   const [message, setMessage] = useState('')
@@ -51,6 +51,9 @@ function App() {
       })
   }
 
+  useEffect(() => {
+    handleGetProfile()
+  }, [])
   const handleLogin = (data) => {
     setIsLoading(true)
     mainApi
@@ -245,7 +248,6 @@ function App() {
   const handleToggleDurationCheck = (isChecked) => {
     if (savedMovieFiltered.length === 0) {
       const filteredByCheck = filterByDuration(savedMoviesFromGet, isChecked)
-      console.log(filteredByCheck)
       setSavedMoviesToShow(filteredByCheck)
       return
     }
@@ -388,6 +390,7 @@ function App() {
     setTimeout(() => setMessage(''), 3000)
     setTimeout(() => setIsError(false), 3000)
   }
+
   useEffect(() => {
     if (savedMoviesFromGet.length > 0) {
       isLikedMovie(moviesToShow)
@@ -404,10 +407,6 @@ function App() {
       return
     }
   }, [])
-  //получаю данные профиля юзера
-  useEffect(() => {
-    handleGetProfile()
-  }, [])
 
   useEffect(() => {
     if (isLogin) {
@@ -419,6 +418,7 @@ function App() {
   useEffect(() => {
     setSavedMovieFiltered(savedMoviesFromGet)
   }, [savedMoviesToShow])
+
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="page">
@@ -430,32 +430,45 @@ function App() {
             <Routes>
               <Route path="/" element={<Main />} />
               <Route
-                path="/signup"
                 element={
-                  <Register message={message} handleRegister={handleRegister} />
+                  <ProtectedRoute condition={!isLogin} redirectTo="/movies" />
                 }
-              />
+              >
+                <Route
+                  path="/signup"
+                  element={
+                    <Register
+                      message={message}
+                      handleRegister={handleRegister}
+                    />
+                  }
+                />
+                <Route
+                  path="/signin"
+                  element={
+                    <Login message={message} handleLogin={handleLogin} />
+                  }
+                />
+              </Route>
               <Route
-                path="/signin"
-                element={<Login message={message} handleLogin={handleLogin} />}
-              />
-              <Route
-                path="/profile"
                 element={
-                  <ProtectedRoute isLogin={isLogin}>
+                  <ProtectedRoute condition={isLogin} redirectTo="/movies" />
+                }
+              >
+                <Route
+                  path="/profile"
+                  element={
                     <Profile
                       handleLogout={handleLogout}
                       handleUpdateUserInfo={handleUpdateUserInfo}
                       message={message}
                       isError={isError}
                     />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/movies"
-                element={
-                  <ProtectedRoute isLogin={isLogin}>
+                  }
+                />
+                <Route
+                  path="/movies"
+                  element={
                     <Movies
                       location={location}
                       isError={isMovieResultError}
@@ -472,13 +485,11 @@ function App() {
                         moviesToShow.length !== 0
                       }
                     />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/saved-movies"
-                element={
-                  <ProtectedRoute isLogin={isLogin}>
+                  }
+                />
+                <Route
+                  path="/saved-movies"
+                  element={
                     <SavedMovies
                       location={location}
                       isError={isSavedResultError}
@@ -490,9 +501,10 @@ function App() {
                       initialMovies={savedMoviesFromGet}
                       isErrorSetter={setIsSavedResultError}
                     />
-                  </ProtectedRoute>
-                }
-              />
+                  }
+                />
+              </Route>
+
               <Route path="*" element={<NotFoundPage />} />
             </Routes>
             {isPageWithFooter ? <Footer /> : null}
