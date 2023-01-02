@@ -73,8 +73,8 @@ class MainApi {
 }
 
 const mainApi = new MainApi({
-  url: 'https://api.kipo.movie-explorer.nomoredomains.club',
-  //url: 'http://localhost:3001',
+  //url: 'https://api.kipo.movie-explorer.nomoredomains.club',
+  url: 'http://localhost:3001',
   headers: {
     'Content-Type': 'application/json',
   },

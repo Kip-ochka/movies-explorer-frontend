@@ -44,6 +44,7 @@ function MoviesCard({ location, movieData, saveHandler, deleteHandler }) {
     const hours = (data.duration - minutes) / 60
     return hours ? `${hours} ч ${minutes} мин` : `${minutes} мин`
   }
+
   return (
     <li className="card">
       <a

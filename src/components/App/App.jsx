@@ -31,7 +31,6 @@ function App() {
   const isPageWithFooter = pageWithFooter.includes(location)
 
   const handleGetProfile = () => {
-    setIsLoading(true)
     mainApi
       .getUser()
       .then((res) => {
@@ -46,14 +45,8 @@ function App() {
           handleError(err)
         })
       })
-      .finally(() => {
-        setIsLoading(false)
-      })
   }
 
-  useEffect(() => {
-    handleGetProfile()
-  }, [])
   const handleLogin = (data) => {
     setIsLoading(true)
     mainApi
@@ -183,8 +176,11 @@ function App() {
       setSavedMoviesToShow(changed)
     } catch (err) {
       handleError(err)
+    } finally {
+      setIsLoading(false)
     }
   }
+
   //общая функция фильтра по инпуту
   const filterByValue = (arr, inputValue) => {
     return arr.filter((movie) => {
@@ -373,10 +369,10 @@ function App() {
     setSearchError('')
     setIsSavedResultError(false)
     setMovieListLoading(false)
-    setIsLoading(false)
     setIsError(false)
     setMessage('')
     setIsOpenPopup(false)
+    setIsLoading(false)
   }
 
   const handleError = (err) => {
@@ -392,11 +388,16 @@ function App() {
   }
 
   useEffect(() => {
-    if (savedMoviesFromGet.length > 0) {
-      isLikedMovie(moviesToShow)
+    handleGetProfile()
+  }, [])
+
+  useEffect(() => {
+    if (isLogin) {
+      setIsSavedResultError(false)
+      getSavedMovies()
     }
-  }, [savedMoviesToShow.length])
-  //получаю фильмы из локалстора
+  }, [isLogin])
+
   useEffect(() => {
     setIsMovieResultError(false)
     const films = JSON.parse(localStorage.getItem('fullFilteredMovies'))
@@ -409,11 +410,10 @@ function App() {
   }, [])
 
   useEffect(() => {
-    if (isLogin) {
-      setIsSavedResultError(false)
-      getSavedMovies()
+    if (savedMoviesFromGet.length > 0) {
+      isLikedMovie(moviesToShow)
     }
-  }, [isLogin])
+  }, [savedMoviesToShow.length])
 
   useEffect(() => {
     setSavedMovieFiltered(savedMoviesFromGet)
