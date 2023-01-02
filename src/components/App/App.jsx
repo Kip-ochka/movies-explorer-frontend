@@ -326,7 +326,7 @@ function App() {
       setSavedMovieFiltered((movies) => [...movies, saved])
       return saved
     } catch (err) {
-      handleError(err)
+      handleError(await err)
     }
   }
 
@@ -343,7 +343,7 @@ function App() {
         movies.filter((movie) => movie._id !== movieData)
       )
     } catch (err) {
-      handleError(err)
+      handleError(await err)
     }
   }
 

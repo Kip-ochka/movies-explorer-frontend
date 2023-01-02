@@ -7,17 +7,17 @@ function MoviesCard({ location, movieData, saveHandler, deleteHandler }) {
   const handleLike = async () => {
     if (isLiked === false) {
       const dataToValidation = {
-        country: data.country,
-        description: data.description,
-        director: data.director,
-        duration: data.duration,
-        year: data.year,
-        image: data.image,
-        trailerLink: data.trailerLink,
-        thumbnail: data.thumbnail,
-        movieId: data.movieId,
-        nameEN: data.nameEN,
-        nameRU: data.nameRU,
+        country: data?.country,
+        description: data?.description,
+        director: data?.director,
+        duration: data?.duration,
+        year: data?.year,
+        image: data?.image,
+        trailerLink: data?.trailerLink,
+        thumbnail: data?.thumbnail,
+        movieId: data?.movieId,
+        nameEN: data?.nameEN,
+        nameRU: data?.nameRU,
       }
       try {
         const movie = await saveHandler(dataToValidation)
@@ -29,7 +29,7 @@ function MoviesCard({ location, movieData, saveHandler, deleteHandler }) {
       return
     }
     if (isLiked === true) {
-      await deleteHandler(data._id)
+      await deleteHandler(data?._id)
       setData(movieData)
       setIsLiked(false)
       return
@@ -40,8 +40,8 @@ function MoviesCard({ location, movieData, saveHandler, deleteHandler }) {
   }
 
   const duration = () => {
-    const minutes = data.duration % 60
-    const hours = (data.duration - minutes) / 60
+    const minutes = data?.duration % 60
+    const hours = (data?.duration - minutes) / 60
     return hours ? `${hours} ч ${minutes} мин` : `${minutes} мин`
   }
 
