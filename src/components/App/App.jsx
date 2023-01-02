@@ -236,6 +236,7 @@ function App() {
       const filteredByCheck = filterByDuration(moviesList, !isChecked)
       setMoviesToSlice(filteredByCheck)
       const sliced = sliceAfterSearch(filteredByCheck)
+      localStorage.setItem('fullFilteredMovies', JSON.stringify(sliced))
       setMoviesToShow(sliced)
     }
     return

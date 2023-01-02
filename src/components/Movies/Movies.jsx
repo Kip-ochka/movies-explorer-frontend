@@ -49,6 +49,7 @@ function Movies({
     }
     setInputValues(evt.target.value)
   }
+
   return (
     <main className="movies">
       <SearchForm
