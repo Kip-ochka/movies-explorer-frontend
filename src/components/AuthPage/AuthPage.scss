@@ -52,10 +52,8 @@
     line-height: 13px;
     text-align: center;
     color: $accent-red;
-    display: none;
-    &_active {
-      display: inline;
-    }
+    display: inline;
+    min-height: 13px;
   }
   &__button-submit {
     border: none;

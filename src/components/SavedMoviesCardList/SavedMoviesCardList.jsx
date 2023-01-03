@@ -1,15 +1,12 @@
 import React from 'react'
 import MoviesCard from '../MoviesCard/MoviesCard'
-import './MoviesCardList.scss'
+import './SavedMoviesCardList.scss'
 
-function MoviesCardList({
+function SavedMoviesCardList({
   location,
   isError,
   error,
   movies,
-  loadMore,
-  hasMore,
-  saveHandler,
   deleteHandler,
 }) {
   return (
@@ -24,22 +21,14 @@ function MoviesCardList({
                 key={movie.movieId}
                 location={location}
                 movieData={movie}
-                saveHandler={saveHandler}
                 deleteHandler={deleteHandler}
               />
             )
           })
         )}
       </ul>
-      <div className="card-list__button-wrapper">
-        {hasMore && !isError ? (
-          <button className="card-list__more-button" onClick={loadMore}>
-            Ещё
-          </button>
-        ) : null}
-      </div>
     </section>
   )
 }
 
-export default MoviesCardList
+export default SavedMoviesCardList

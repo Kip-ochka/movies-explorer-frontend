@@ -1,38 +1,72 @@
 import React from 'react'
 import './MoviesCard.scss'
 
-function MoviesCard({ location }) {
-  const [isLiked, setIsLiked] = React.useState(false)
-  const handleLike = () => {
-    setIsLiked((v) => !v)
+function MoviesCard({ location, movieData, saveHandler, deleteHandler }) {
+  const [data, setData] = React.useState(movieData)
+  const [isLiked, setIsLiked] = React.useState(data?.isLiked)
+  const handleLike = async () => {
+    if (isLiked === false) {
+      const dataToValidation = {
+        country: data?.country,
+        description: data?.description,
+        director: data?.director,
+        duration: data?.duration,
+        year: data?.year,
+        image: data?.image,
+        trailerLink: data?.trailerLink,
+        thumbnail: data?.thumbnail,
+        movieId: data?.movieId,
+        nameEN: data?.nameEN,
+        nameRU: data?.nameRU,
+      }
+      try {
+        const movie = await saveHandler(dataToValidation)
+        setData(movie)
+        setIsLiked(true)
+      } catch (err) {
+        console.log(err)
+      }
+      return
+    }
+    if (isLiked === true) {
+      await deleteHandler(data?._id)
+      setData(movieData)
+      setIsLiked(false)
+      return
+    }
+  }
+  const deleted = () => {
+    deleteHandler(movieData._id)
+  }
+
+  const duration = () => {
+    const minutes = data?.duration % 60
+    const hours = (data?.duration - minutes) / 60
+    return hours ? `${hours} ч ${minutes} мин` : `${minutes} мин`
   }
 
   return (
-    <li className='card'>
+    <li className="card">
       <a
-        href='https://www.youtube.com/watch?v=iYMoLgSlSKQ&t=2s'
-        target='_blank'
-        className='card__trailer'
-        rel='noreferrer'
+        href={data?.trailerLink}
+        target="_blank"
+        className="card__trailer"
+        rel="noreferrer"
       >
-        <img
-          src='https://www.soyuz.ru/public/uploads/files/5/7481412/1005x558_20220415183252fecbaf0ea2.jpg'
-          alt='Трейлер фильма'
-          className='card__image'
-        />
+        <img src={data?.image} alt="Трейлер фильма" className="card__image" />
       </a>
-      <div className='card__title-wrapper'>
-        <p className='card__title'>Я рыба я не рыба а рыба фыв фыв </p>
+      <div className="card__title-wrapper">
+        <p className="card__title">{data?.nameRU}</p>
         {location === '/movies' ? (
           <button
             className={`card__like ${isLiked && 'card__like_type_active'}`}
             onClick={handleLike}
           />
         ) : (
-          <button className={`card__delete`} />
+          <button className={`card__delete`} onClick={deleted} />
         )}
       </div>
-      <p className='card__duration'>1ч 24м</p>
+      <p className="card__duration">{duration()}</p>
     </li>
   )
 }
