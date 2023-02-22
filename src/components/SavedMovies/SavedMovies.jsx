@@ -14,6 +14,7 @@ function SavedMovies({
   deleteHandler,
   initialMovies,
   isErrorSetter,
+  isLogin,
 }) {
   const [isLoading, setIsLoading] = React.useState(false)
   const [validationMessage, setValidationMessage] = React.useState('')
@@ -80,6 +81,7 @@ function SavedMovies({
             movies={moviesToShow}
             deleteHandler={deleteHandler}
             initialMovies={initialMovies}
+            isLogin={isLogin}
           />
         </>
       )}

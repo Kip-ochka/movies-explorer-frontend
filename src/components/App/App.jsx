@@ -54,7 +54,7 @@ function App() {
       .then((res) => {
         setCurrentUser(res.user)
         setIsLogin(true)
-        navigate('/movies')
+        navigate('/')
         hundleSuccess('Вы успешно были авторизованы')
       })
       .then(() => {
@@ -79,7 +79,7 @@ function App() {
           .then((res) => {
             setCurrentUser(res)
             setIsLogin(true)
-            navigate('/movies')
+            navigate('/')
             hundleSuccess('Вы успешно были зарегистрированы и авторизованы')
           })
       })
@@ -395,7 +395,7 @@ function App() {
       setMoviesToShow(sliced)
     })
     handleGetProfile()
-  }, [])
+  }, [isLogin])
 
   useEffect(() => {
     if (isLogin) {
@@ -507,6 +507,7 @@ function App() {
                       deleteHandler={deleteFromSaveMovie}
                       initialMovies={savedMoviesFromGet}
                       isErrorSetter={setIsSavedResultError}
+                      isLogin={isLogin}
                     />
                   }
                 />

@@ -63,17 +63,15 @@ function MoviesCard({
       </a>
       <div className="card__title-wrapper">
         <p className="card__title">{data?.nameRU}</p>
-        {isLogin ? (
-          location === '/movies' ? (
-            <button
-              className={`card__like ${isLiked && 'card__like_type_active'}`}
-              onClick={handleLike}
-            />
-          ) : (
-            <button className={`card__delete`} onClick={deleted} />
-          )
-        ) : null}
-        {}
+        {location === '/' && isLogin && (
+          <button
+            className={`card__like ${isLiked && 'card__like_type_active'}`}
+            onClick={handleLike}
+          />
+        )}
+        {location === '/saved-movies' && isLogin && (
+          <button className={`card__delete`} onClick={deleted} />
+        )}
       </div>
       <p className="card__duration">{duration()}</p>
     </li>

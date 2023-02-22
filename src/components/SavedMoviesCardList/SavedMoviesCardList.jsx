@@ -8,6 +8,7 @@ function SavedMoviesCardList({
   error,
   movies,
   deleteHandler,
+  isLogin,
 }) {
   return (
     <section className="card-list">
@@ -22,6 +23,7 @@ function SavedMoviesCardList({
                 location={location}
                 movieData={movie}
                 deleteHandler={deleteHandler}
+                isLogin={isLogin}
               />
             )
           })
