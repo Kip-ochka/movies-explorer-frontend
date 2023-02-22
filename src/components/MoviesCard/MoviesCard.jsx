@@ -1,7 +1,13 @@
 import React from 'react'
 import './MoviesCard.scss'
 
-function MoviesCard({ location, movieData, saveHandler, deleteHandler }) {
+function MoviesCard({
+  location,
+  movieData,
+  saveHandler,
+  deleteHandler,
+  isLogin,
+}) {
   const [data, setData] = React.useState(movieData)
   const [isLiked, setIsLiked] = React.useState(data?.isLiked)
   const handleLike = async () => {
@@ -57,14 +63,17 @@ function MoviesCard({ location, movieData, saveHandler, deleteHandler }) {
       </a>
       <div className="card__title-wrapper">
         <p className="card__title">{data?.nameRU}</p>
-        {location === '/movies' ? (
-          <button
-            className={`card__like ${isLiked && 'card__like_type_active'}`}
-            onClick={handleLike}
-          />
-        ) : (
-          <button className={`card__delete`} onClick={deleted} />
-        )}
+        {isLogin ? (
+          location === '/movies' ? (
+            <button
+              className={`card__like ${isLiked && 'card__like_type_active'}`}
+              onClick={handleLike}
+            />
+          ) : (
+            <button className={`card__delete`} onClick={deleted} />
+          )
+        ) : null}
+        {}
       </div>
       <p className="card__duration">{duration()}</p>
     </li>

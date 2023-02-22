@@ -389,6 +389,11 @@ function App() {
   }
 
   useEffect(() => {
+    getMoviesFromBetFilms().then((movies) => {
+      setMoviesToSlice(movies)
+      const sliced = sliceAfterSearch(movies)
+      setMoviesToShow(sliced)
+    })
     handleGetProfile()
   }, [])
 
@@ -429,7 +434,28 @@ function App() {
           <>
             {isPageWithHeader ? <Header isLogin={isLogin} /> : null}
             <Routes>
-              <Route path="/" element={<Main />} />
+              <Route
+                path="/"
+                element={
+                  <Movies
+                    location={location}
+                    isError={isMovieResultError}
+                    error={searchError}
+                    onSubmit={handleSearchSubmit}
+                    onToggle={filterCheckbox}
+                    movies={isLikedMovie(moviesToShow)}
+                    deleteHandler={deleteFromSaveMovie}
+                    saveHandler={addToSaveMovie}
+                    preloading={movieListLoading}
+                    loadMore={loadMore}
+                    hasMore={
+                      moviesToShow.length !== moviesToSlice.length &&
+                      moviesToShow.length !== 0
+                    }
+                    isLogin={isLogin}
+                  />
+                }
+              />
               <Route
                 element={
                   <ProtectedRoute condition={!isLogin} redirectTo="/movies" />
@@ -467,27 +493,7 @@ function App() {
                     />
                   }
                 />
-                <Route
-                  path="/movies"
-                  element={
-                    <Movies
-                      location={location}
-                      isError={isMovieResultError}
-                      error={searchError}
-                      onSubmit={handleSearchSubmit}
-                      onToggle={filterCheckbox}
-                      movies={isLikedMovie(moviesToShow)}
-                      deleteHandler={deleteFromSaveMovie}
-                      saveHandler={addToSaveMovie}
-                      preloading={movieListLoading}
-                      loadMore={loadMore}
-                      hasMore={
-                        moviesToShow.length !== moviesToSlice.length &&
-                        moviesToShow.length !== 0
-                      }
-                    />
-                  }
-                />
+
                 <Route
                   path="/saved-movies"
                   element={

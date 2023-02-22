@@ -11,6 +11,7 @@ function MoviesCardList({
   hasMore,
   saveHandler,
   deleteHandler,
+  isLogin,
 }) {
   return (
     <section className="card-list">
@@ -26,6 +27,7 @@ function MoviesCardList({
                 movieData={movie}
                 saveHandler={saveHandler}
                 deleteHandler={deleteHandler}
+                isLogin={isLogin}
               />
             )
           })

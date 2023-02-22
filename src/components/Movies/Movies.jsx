@@ -16,6 +16,7 @@ function Movies({
   preloading,
   loadMore,
   hasMore,
+  isLogin,
 }) {
   const [validationMessage, setValidationMessage] = React.useState('')
   const [isChecked, setIsChecked] = React.useState(
@@ -74,6 +75,7 @@ function Movies({
             hasMore={hasMore}
             saveHandler={saveHandler}
             deleteHandler={deleteHandler}
+            isLogin={isLogin}
           />
         </>
       )}
